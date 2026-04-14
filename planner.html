@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<title>Weekly Planner</title>
+<title>Planner</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
@@ -17,17 +17,27 @@
   ::-webkit-scrollbar-track { background: #111; }
   ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
 
-  #app { max-width: 480px; margin: 0 auto; padding: 20px 16px 60px; position: relative; }
+  /* ── Tab bar ── */
+  #tab-bar { position: sticky; top: 0; z-index: 50; background: #0a0a0a; display: flex; border-bottom: 1px solid #1a1a1a; max-width: 480px; margin: 0 auto; }
+  .tab-btn { flex: 1; background: none; border: none; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #444; padding: 13px 0 11px; cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .tab-btn.active { color: #e8e0d0; border-bottom-color: #C9A97E; }
+
+  /* ── Pages ── */
+  .page { display: none; }
+  .page.active { display: block; }
+  #app, #grocery-app { max-width: 480px; margin: 0 auto; padding: 20px 16px 80px; }
 
   h1 { font-family: 'DM Serif Display', serif; font-size: 30px; color: #e8e0d0; margin-bottom: 2px; }
   .subtitle { font-family: 'DM Mono', monospace; font-size: 12px; color: #555; letter-spacing: 0.08em; margin-bottom: 16px; }
 
+  /* ── Streak ── */
   .streak-banner { display: flex; align-items: center; gap: 12px; background: #111; border: 1px solid #222; border-radius: 6px; padding: 12px 14px; margin-bottom: 20px; }
   .streak-flame { font-size: 24px; line-height: 1; }
   .streak-count { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 600; line-height: 1; color: #C9A97E; }
   .streak-count.zero { color: #444; }
   .streak-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: #444; margin-top: 3px; letter-spacing: 0.06em; }
 
+  /* ── Day cards ── */
   .day-card { border-radius: 6px; margin-bottom: 10px; border: 1px solid #181818; background: #0e0e0e; }
   .day-card.today { background: #141414; border-color: #2a2a2a; }
   .day-header { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; cursor: pointer; background: none; border: none; text-align: left; }
@@ -39,127 +49,259 @@
   .day-body { padding: 4px 14px 14px; display: none; }
   .day-body.open { display: block; }
 
+  /* ── Category sections ── */
   .cat-section { margin-bottom: 14px; }
   .cat-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
   .cat-label { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 700; letter-spacing: 1px; }
   .cat-line { flex: 1; height: 1px; opacity: 0.2; }
   .cat-empty { font-family: 'DM Sans', sans-serif; color: #444; font-size: 14px; font-style: italic; padding-left: 14px; margin-bottom: 4px; }
 
+  /* ── Tasks ── */
   .task-row { position: relative; display: flex; align-items: flex-start; gap: 8px; padding: 3px 0 3px 4px; }
   .task-check { width: 18px; height: 18px; min-width: 18px; border-radius: 3px; border: 1.5px solid #555; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
   .task-check svg { display: none; }
   .task-check.done svg { display: block; }
   .task-text { flex: 1; font-family: 'DM Sans', sans-serif; font-size: 14px; color: #d4d4d4; line-height: 1.5; word-break: break-word; }
   .task-text.done { color: #444; text-decoration: line-through; }
+  .task-text[contenteditable="true"] { outline: none; border-bottom: 1px solid #2a2a2a; color: #e8e0d0; padding-bottom: 1px; cursor: text; }
+  .task-edit { background: none; border: none; color: #444; cursor: pointer; font-size: 13px; padding: 0 3px; line-height: 1; margin-top: 2px; flex-shrink: 0; opacity: 0.4; }
+  .task-edit:hover { opacity: 1; color: #888; }
+  .task-row:hover .task-edit { opacity: 0.7; }
   .task-delete { background: none; border: none; color: #444; cursor: pointer; font-size: 18px; padding: 0 3px; line-height: 1; margin-top: 1px; flex-shrink: 0; }
 
+  /* ── Input row ── */
   .input-row { display: flex; gap: 6px; margin-top: 6px; padding-left: 4px; }
   .task-input { flex: 1; background: #161616; border: none; border-bottom: 1px solid #2a2a2a; color: #aaa; font-size: 14px; font-family: 'DM Mono', monospace; padding: 4px; outline: none; }
   .task-input::placeholder { color: #444; }
   .add-btn { background: none; border-radius: 2px; font-family: 'DM Mono', monospace; font-size: 13px; padding: 3px 10px; cursor: pointer; border: 1px solid; }
 
-  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
-  .legend-item { display: flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 12px; color: #444; }
-
-  .fw-canvas { position: fixed; pointer-events: none; z-index: 999; }
-
-  .task-text[contenteditable="true"] { outline: none; border-bottom: 1px solid #2a2a2a; color: #e8e0d0; padding-bottom: 1px; cursor: text; }
-  .task-edit { background: none; border: none; color: #444; cursor: pointer; font-size: 13px; padding: 0 3px; line-height: 1; margin-top: 2px; flex-shrink: 0; opacity: 0.5; }
-  .task-edit:hover { opacity: 1; color: #888; }
-  .task-row:hover .task-edit { opacity: 0.8; }
-
+  /* ── EOD bar ── */
   .eod-bar { display: flex; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px solid #1a1a1a; }
   .eod-btn { flex: 1; background: none; border: 1px solid #222; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; padding: 8px 6px; cursor: pointer; color: #555; transition: color 0.15s, border-color 0.15s; }
   .eod-btn:hover { border-color: #3a3a3a; color: #888; }
   .eod-btn.danger:hover { border-color: #7a3030; color: #C97E7E; }
 
+  /* ── Legend ── */
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 12px; color: #444; }
+
+  /* ── Grocery ── */
+  .grocery-header-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 16px; }
+  .store-card { border-radius: 6px; margin-bottom: 10px; border: 1px solid #181818; background: #0e0e0e; }
+  .store-header { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; cursor: pointer; background: none; border: none; text-align: left; gap: 8px; }
+  .store-name-wrap { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+  .store-name { font-family: 'DM Serif Display', serif; font-size: 20px; color: #e8e0d0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .store-count { font-family: 'DM Mono', monospace; font-size: 10px; color: #444; }
+  .store-arrow { color: #555; font-size: 13px; flex-shrink: 0; }
+  .store-body { padding: 4px 14px 14px; display: none; }
+  .store-body.open { display: block; }
+
+  .store-actions { display: flex; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #1a1a1a; }
+  .store-act-btn { background: none; border: 1px solid #222; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; padding: 6px 10px; cursor: pointer; color: #555; transition: color 0.15s, border-color 0.15s; }
+  .store-act-btn:hover { border-color: #3a3a3a; color: #888; }
+  .store-act-btn.danger:hover { border-color: #7a3030; color: #C97E7E; }
+
+  .add-store-row { display: flex; gap: 6px; margin-top: 16px; }
+  .store-name-input { flex: 1; background: #111; border: 1px solid #222; border-radius: 4px; color: #aaa; font-size: 14px; font-family: 'DM Mono', monospace; padding: 8px 10px; outline: none; }
+  .store-name-input::placeholder { color: #333; }
+  .store-add-btn { background: none; border: 1px solid #2a2a2a; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 12px; padding: 8px 14px; cursor: pointer; color: #666; transition: color 0.15s, border-color 0.15s; }
+  .store-add-btn:hover { color: #aaa; border-color: #444; }
+
+  /* store name inline edit */
+  .store-name[contenteditable="true"] { outline: none; border-bottom: 1px solid #444; min-width: 40px; cursor: text; }
+
+  /* ── Grocery item checkbox (round) ── */
+  .groc-check { width: 18px; height: 18px; min-width: 18px; border-radius: 50%; border: 1.5px solid #555; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
+  .groc-check svg { display: none; }
+  .groc-check.done svg { display: block; }
+
+  /* ── Toast ── */
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 12px; color: #888; padding: 8px 18px; opacity: 0; transition: opacity 0.2s, transform 0.2s; pointer-events: none; white-space: nowrap; z-index: 1000; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── Fireworks ── */
+  .fw-canvas { position: fixed; pointer-events: none; z-index: 999; }
 </style>
 </head>
 <body>
-<div id="app"></div>
+
+<div id="tab-bar">
+  <button class="tab-btn active" data-tab="planner">◈ PLANNER</button>
+  <button class="tab-btn" data-tab="grocery">◇ GROCERY</button>
+</div>
+
+<div id="page-planner" class="page active">
+  <div id="app"></div>
+</div>
+
+<div id="page-grocery" class="page">
+  <div id="grocery-app"></div>
+</div>
+
 <script>
-const CATEGORIES = ["Research","Work","Exercise","Life"];
-const ICONS = {Research:"◈",Work:"◉",Exercise:"◎",Life:"◇"};
-const COLORS = {Research:"#7EB8C9",Work:"#C9A97E",Exercise:"#7EC97E",Life:"#C97EAA"};
+// ─────────────────────────────────────────────
+// SHARED UTILS
+// ─────────────────────────────────────────────
 const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
-function getDayRange() {
-  const today = new Date();
-  return Array.from({length:7},(_,i)=>{
-    const d = new Date(today); d.setDate(today.getDate()+i);
-    return {label:DAYS[d.getDay()],isToday:i===0,dateStr:d.toLocaleDateString("en-CA")};
-  });
+function todayStr() { return new Date().toLocaleDateString("en-CA"); }
+function dateStrOffset(n) { const d=new Date(); d.setDate(d.getDate()+n); return d.toLocaleDateString("en-CA"); }
+
+function showToast(msg) {
+  let t = document.getElementById("toast");
+  if (!t) { t = document.createElement("div"); t.id="toast"; t.className="toast"; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._timer); t._timer = setTimeout(()=>t.classList.remove("show"), 2400);
 }
 
-const sKey = (ds,cat) => `planner:${ds}:${cat}`;
-const SKEY = "planner:streak";
-const getTasks = (ds,cat) => { try{return JSON.parse(localStorage.getItem(sKey(ds,cat)))||[];}catch{return[];} };
-const saveTasks = (ds,cat,t) => localStorage.setItem(sKey(ds,cat),JSON.stringify(t));
-const getStreak = () => { try{return JSON.parse(localStorage.getItem(SKEY))||{count:0,lastCompleted:null};}catch{return{count:0,lastCompleted:null};} };
-const saveStreak = s => localStorage.setItem(SKEY,JSON.stringify(s));
-
 function launchFireworks(el, color) {
-  const rect = el.getBoundingClientRect();
-  const size = 120;
-  const canvas = document.createElement("canvas");
-  canvas.className = "fw-canvas";
-  canvas.width = size; canvas.height = size;
-  canvas.style.cssText = `width:${size}px;height:${size}px;left:${rect.left+rect.width/2-size/2}px;top:${rect.top+rect.height/2-size/2}px;`;
+  const rect=el.getBoundingClientRect(), size=120;
+  const canvas=document.createElement("canvas"); canvas.className="fw-canvas";
+  canvas.width=size; canvas.height=size;
+  canvas.style.cssText=`width:${size}px;height:${size}px;left:${rect.left+rect.width/2-size/2}px;top:${rect.top+rect.height/2-size/2}px;`;
   document.body.appendChild(canvas);
-  const ctx = canvas.getContext("2d");
-  const cx=size/2, cy=size/2;
-  const r=parseInt(color.slice(1,3),16), g=parseInt(color.slice(3,5),16), b=parseInt(color.slice(5,7),16);
+  const ctx=canvas.getContext("2d"), cx=size/2, cy=size/2;
+  const r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16);
   const pal=[color,`rgb(${Math.min(r+60,255)},${Math.min(g+60,255)},${Math.min(b+60,255)})`,`rgb(${Math.max(r-40,0)},${Math.max(g-40,0)},${Math.max(b-40,0)})`, "#e8e0d0"];
-  const N=36;
-  const pts = Array.from({length:N},(_,i)=>{
-    const a=(i/N)*Math.PI*2, sp=1.5+Math.random()*2.5;
-    return {x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-0.8,alpha:1,rad:2+Math.random()*2,col:pal[Math.floor(Math.random()*pal.length)],dec:0.02+Math.random()*0.01};
-  });
-  function draw(){
-    ctx.clearRect(0,0,size,size);
-    let alive=false;
-    for(const p of pts){
-      if(p.alpha<=0) continue; alive=true;
-      ctx.save(); ctx.globalAlpha=p.alpha; ctx.fillStyle=p.col;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.rad,0,Math.PI*2); ctx.fill(); ctx.restore();
-      p.x+=p.vx; p.y+=p.vy; p.vy+=0.08; p.alpha-=p.dec;
-    }
-    if(alive) requestAnimationFrame(draw); else canvas.remove();
-  }
+  const pts=Array.from({length:36},(_,i)=>{const a=(i/36)*Math.PI*2,sp=1.5+Math.random()*2.5;return{x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-0.8,alpha:1,rad:2+Math.random()*2,col:pal[Math.floor(Math.random()*pal.length)],dec:0.02+Math.random()*0.01};});
+  function draw(){ctx.clearRect(0,0,size,size);let alive=false;for(const p of pts){if(p.alpha<=0)continue;alive=true;ctx.save();ctx.globalAlpha=p.alpha;ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.rad,0,Math.PI*2);ctx.fill();ctx.restore();p.x+=p.vx;p.y+=p.vy;p.vy+=0.08;p.alpha-=p.dec;}if(alive)requestAnimationFrame(draw);else canvas.remove();}
   requestAnimationFrame(draw);
 }
 
-function checkStreak(todayStr) {
+function makeEditableText(spanEl, getText, onSave) {
+  // Toggle inline editing on a span
+  const editBtn = document.createElement("button");
+  editBtn.className = "task-edit"; editBtn.title = "Edit"; editBtn.textContent = "✎";
+  editBtn.addEventListener("click", () => {
+    if (spanEl.contentEditable === "true") {
+      const v = spanEl.textContent.trim(); if (v) onSave(v);
+      spanEl.contentEditable = "false"; editBtn.textContent = "✎"; editBtn.style.color = "";
+    } else {
+      spanEl.contentEditable = "true"; spanEl.focus();
+      const range=document.createRange(); range.selectNodeContents(spanEl); range.collapse(false);
+      const sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      editBtn.textContent = "✓";
+    }
+  });
+  spanEl.addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); editBtn.click(); }
+    if (e.key === "Escape") { spanEl.textContent = getText(); spanEl.contentEditable = "false"; editBtn.textContent = "✎"; editBtn.style.color = ""; }
+  });
+  spanEl.addEventListener("blur", () => {
+    if (spanEl.contentEditable === "true") {
+      const v = spanEl.textContent.trim(); if (v) onSave(v);
+      spanEl.contentEditable = "false"; editBtn.textContent = "✎"; editBtn.style.color = "";
+    }
+  });
+  return editBtn;
+}
+
+// ─────────────────────────────────────────────
+// TAB SWITCHING
+// ─────────────────────────────────────────────
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("page-"+btn.dataset.tab).classList.add("active");
+  });
+});
+
+// ─────────────────────────────────────────────
+// PLANNER
+// ─────────────────────────────────────────────
+const CATEGORIES = ["Research","Work","Exercise","Life"];
+const ICONS = {Research:"◈",Work:"◉",Exercise:"◎",Life:"◇"};
+const COLORS = {Research:"#7EB8C9",Work:"#C9A97E",Exercise:"#7EC97E",Life:"#C97EAA"};
+
+const pKey = (ds,cat) => `planner:${ds}:${cat}`;
+const SKEY = "planner:streak";
+const CARRY_KEY = "planner:lastCarryDate";
+
+const getTasks    = (ds,cat) => { try{return JSON.parse(localStorage.getItem(pKey(ds,cat)))||[];}catch{return[];} };
+const saveTasks   = (ds,cat,t) => localStorage.setItem(pKey(ds,cat),JSON.stringify(t));
+const getStreak   = () => { try{return JSON.parse(localStorage.getItem(SKEY))||{count:0,lastCompleted:null};}catch{return{count:0,lastCompleted:null};} };
+const saveStreak  = s => localStorage.setItem(SKEY,JSON.stringify(s));
+
+// Auto-carry: move incomplete tasks from `fromDate` to `toDate`
+function autoCarry(fromDate, toDate, silent=false) {
+  // Skip if already carried this date pair
+  const carried = localStorage.getItem(CARRY_KEY);
+  if (carried === fromDate+"->"+toDate) return;
+
+  let count = 0;
+  for (const cat of CATEGORIES) {
+    const tasks = getTasks(fromDate, cat);
+    const incomplete = tasks.filter(t => !t.done);
+    if (!incomplete.length) continue;
+    const existing = getTasks(toDate, cat);
+    const existingTexts = new Set(existing.map(t=>t.text.trim().toLowerCase()));
+    const toAdd = incomplete.filter(t => !existingTexts.has(t.text.trim().toLowerCase()));
+    if (!toAdd.length) continue;
+    saveTasks(toDate, cat, [...existing, ...toAdd.map(t=>({id:Date.now()+Math.random(),text:t.text,done:false}))]);
+    saveTasks(fromDate, cat, tasks.filter(t=>t.done));
+    count += toAdd.length;
+  }
+  localStorage.setItem(CARRY_KEY, fromDate+"->"+toDate);
+  if (count > 0 && !silent) showToast(`↪ Auto-carried ${count} task${count!==1?"s":""} from yesterday`);
+}
+
+// On-open carry: check if yesterday had incomplete tasks and carry them
+function onOpenCarry() {
+  const yesterday = dateStrOffset(-1);
+  const today = todayStr();
+  autoCarry(yesterday, today);
+}
+
+// Midnight carry: schedule a carry at the next midnight
+function scheduleMidnightCarry() {
+  const now = new Date();
+  const midnight = new Date(now); midnight.setHours(24,0,0,100);
+  const msUntilMidnight = midnight - now;
+  setTimeout(() => {
+    const fromDate = dateStrOffset(-1); // at midnight, "today" becomes tomorrow, so carry yesterday
+    const toDate = todayStr();
+    autoCarry(fromDate, toDate);
+    renderPlanner(); // re-render since date may have changed
+    scheduleMidnightCarry(); // schedule next midnight
+  }, msUntilMidnight);
+}
+
+function getDayRange() {
+  return Array.from({length:7},(_,i)=>{
+    const d=new Date(); d.setDate(d.getDate()+i);
+    return {label:DAYS[d.getDay()], isToday:i===0, dateStr:d.toLocaleDateString("en-CA")};
+  });
+}
+
+function checkStreak(ds) {
   let anyTask=false, allDone=true;
-  for(const cat of CATEGORIES){
-    const t=getTasks(todayStr,cat);
-    if(t.length>0){ anyTask=true; if(t.some(x=>!x.done)){allDone=false;break;} }
+  for (const cat of CATEGORIES) {
+    const t=getTasks(ds,cat);
+    if(t.length>0){anyTask=true; if(t.some(x=>!x.done)){allDone=false;break;}}
   }
   if(!anyTask||!allDone) return;
   const s=getStreak();
-  if(s.lastCompleted===todayStr) return;
+  if(s.lastCompleted===ds) return;
   const yd=new Date(); yd.setDate(yd.getDate()-1);
   const yStr=yd.toLocaleDateString("en-CA");
-  const newCount = s.lastCompleted===yStr ? s.count+1 : 1;
-  saveStreak({count:newCount,lastCompleted:todayStr});
+  saveStreak({count: s.lastCompleted===yStr ? s.count+1 : 1, lastCompleted:ds});
   renderStreakBanner();
 }
 
 function renderStreakBanner() {
   const s=getStreak();
   const flames=s.count>=7?"🔥🔥🔥":s.count>=3?"🔥🔥":s.count>=1?"🔥":"—";
-  const el=document.getElementById("streak-banner");
-  if(!el) return;
-  el.innerHTML=`<span class="streak-flame">${flames}</span><div><div class="streak-count${s.count===0?' zero':''}">${s.count} day${s.count!==1?'s':''}</div><div class="streak-sub">${s.count===0?'COMPLETE TODAY TO START YOUR STREAK':`STREAK · LAST: ${s.lastCompleted}`}</div></div>`;
+  const el=document.getElementById("streak-banner"); if(!el) return;
+  el.innerHTML=`<span class="streak-flame">${flames}</span><div><div class="streak-count${s.count===0?" zero":""}">${s.count} day${s.count!==1?"s":""}</div><div class="streak-sub">${s.count===0?"COMPLETE TODAY TO START YOUR STREAK":`STREAK · LAST: ${s.lastCompleted}`}</div></div>`;
 }
 
-function renderTaskList(dateStr, cat, container, isToday) {
+function renderTaskList(dateStr, cat, container) {
   const color=COLORS[cat];
   const tasks=getTasks(dateStr,cat);
   container.innerHTML="";
-  if(tasks.length===0){
+  if(!tasks.length){
     const e=document.createElement("div"); e.className="cat-empty"; e.textContent="no tasks"; container.appendChild(e);
   }
   tasks.forEach((task,idx)=>{
@@ -170,79 +312,31 @@ function renderTaskList(dateStr, cat, container, isToday) {
     check.style.backgroundColor=task.done?color:"transparent";
     check.innerHTML=`<svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="#0d0d0d" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
     check.addEventListener("click",()=>{
-      const cur=getTasks(dateStr,cat);
-      cur[idx].done=!cur[idx].done;
-      saveTasks(dateStr,cat,cur);
+      const cur=getTasks(dateStr,cat); cur[idx].done=!cur[idx].done; saveTasks(dateStr,cat,cur);
       if(cur[idx].done) launchFireworks(check,color);
-      renderTaskList(dateStr,cat,container,isToday);
-      checkStreak(dateStr);
+      renderTaskList(dateStr,cat,container); checkStreak(dateStr);
     });
     const text=document.createElement("span");
-    text.className="task-text"+(task.done?" done":"");
-    text.textContent=task.text;
-
-    // Edit button — toggles contenteditable
-    const editBtn=document.createElement("button");
-    editBtn.className="task-edit"; editBtn.title="Edit"; editBtn.textContent="✎";
-    editBtn.addEventListener("click",()=>{
-      if(task.done) return; // don't edit completed tasks
-      const isEditing = text.contentEditable === "true";
-      if(!isEditing) {
-        text.contentEditable = "true";
-        text.focus();
-        // Move cursor to end
-        const range = document.createRange(); range.selectNodeContents(text); range.collapse(false);
-        const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
-        editBtn.textContent = "✓"; editBtn.style.color = color;
-      } else {
-        const newText = text.textContent.trim();
-        if(newText) {
-          const cur=getTasks(dateStr,cat); cur[idx].text=newText; saveTasks(dateStr,cat,cur);
-        }
-        text.contentEditable = "false";
-        editBtn.textContent = "✎"; editBtn.style.color = "";
-      }
+    text.className="task-text"+(task.done?" done":""); text.textContent=task.text;
+    const editBtn=makeEditableText(text, ()=>task.text, v=>{
+      if(task.done) return;
+      const cur=getTasks(dateStr,cat); cur[idx].text=v; saveTasks(dateStr,cat,cur);
     });
-    text.addEventListener("keydown", e => {
-      if(e.key === "Enter") { e.preventDefault(); editBtn.click(); }
-      if(e.key === "Escape") { text.textContent = task.text; text.contentEditable = "false"; editBtn.textContent = "✎"; editBtn.style.color = ""; }
-    });
-    text.addEventListener("blur", () => {
-      if(text.contentEditable === "true") {
-        const newText = text.textContent.trim();
-        if(newText) { const cur=getTasks(dateStr,cat); cur[idx].text=newText; saveTasks(dateStr,cat,cur); }
-        text.contentEditable = "false"; editBtn.textContent = "✎"; editBtn.style.color = "";
-      }
-    });
-
-    const del=document.createElement("button");
-    del.className="task-delete"; del.textContent="×";
-    del.addEventListener("click",()=>{
-      const cur=getTasks(dateStr,cat); cur.splice(idx,1);
-      saveTasks(dateStr,cat,cur); renderTaskList(dateStr,cat,container,isToday);
-    });
+    const del=document.createElement("button"); del.className="task-delete"; del.textContent="×";
+    del.addEventListener("click",()=>{ const cur=getTasks(dateStr,cat); cur.splice(idx,1); saveTasks(dateStr,cat,cur); renderTaskList(dateStr,cat,container); });
     row.appendChild(check); row.appendChild(text); row.appendChild(editBtn); row.appendChild(del);
     container.appendChild(row);
   });
   const inputRow=document.createElement("div"); inputRow.className="input-row";
-  const input=document.createElement("input");
-  input.className="task-input"; input.placeholder="+ add task"; input.type="text";
-  const btn=document.createElement("button");
-  btn.className="add-btn"; btn.style.borderColor=color+"66"; btn.style.color=color; btn.textContent="add";
-  function add(){
-    const v=input.value.trim(); if(!v) return;
-    const cur=getTasks(dateStr,cat);
-    cur.push({id:Date.now(),text:v,done:false});
-    saveTasks(dateStr,cat,cur);
-    renderTaskList(dateStr,cat,container,isToday);
-  }
-  btn.addEventListener("click",add);
-  input.addEventListener("keydown",e=>{if(e.key==="Enter")add();});
+  const input=document.createElement("input"); input.className="task-input"; input.placeholder="+ add task"; input.type="text";
+  const btn=document.createElement("button"); btn.className="add-btn"; btn.style.borderColor=color+"66"; btn.style.color=color; btn.textContent="add";
+  function add(){ const v=input.value.trim(); if(!v) return; const cur=getTasks(dateStr,cat); cur.push({id:Date.now(),text:v,done:false}); saveTasks(dateStr,cat,cur); renderTaskList(dateStr,cat,container); }
+  btn.addEventListener("click",add); input.addEventListener("keydown",e=>{if(e.key==="Enter")add();});
   inputRow.appendChild(input); inputRow.appendChild(btn);
   container.appendChild(inputRow);
 }
 
-function renderCatSection(dateStr, cat, isToday) {
+function renderCatSection(dateStr, cat) {
   const color=COLORS[cat];
   const sec=document.createElement("div"); sec.className="cat-section";
   const hdr=document.createElement("div"); hdr.className="cat-header";
@@ -250,9 +344,30 @@ function renderCatSection(dateStr, cat, isToday) {
   const line=document.createElement("div"); line.className="cat-line"; line.style.backgroundColor=color;
   hdr.appendChild(lbl); hdr.appendChild(line);
   const tc=document.createElement("div");
-  renderTaskList(dateStr,cat,tc,isToday);
+  renderTaskList(dateStr,cat,tc);
   sec.appendChild(hdr); sec.appendChild(tc);
   return sec;
+}
+
+function clearCompleted(dateStr) {
+  let n=0;
+  for(const cat of CATEGORIES){ const t=getTasks(dateStr,cat), r=t.filter(x=>!x.done); n+=t.length-r.length; saveTasks(dateStr,cat,r); }
+  renderPlanner();
+  showToast(n>0?`Cleared ${n} completed task${n!==1?"s":""}`:"No completed tasks to clear");
+}
+
+function manualCarry(dateStr) {
+  const next=dateStrOffset(1);
+  let n=0;
+  for(const cat of CATEGORIES){
+    const tasks=getTasks(dateStr,cat), inc=tasks.filter(t=>!t.done); if(!inc.length) continue;
+    const ex=getTasks(next,cat), exTxt=new Set(ex.map(t=>t.text.trim().toLowerCase()));
+    const add=inc.filter(t=>!exTxt.has(t.text.trim().toLowerCase()));
+    saveTasks(next,cat,[...ex,...add.map(t=>({id:Date.now()+Math.random(),text:t.text,done:false}))]);
+    saveTasks(dateStr,cat,tasks.filter(t=>t.done)); n+=add.length;
+  }
+  renderPlanner();
+  showToast(n>0?`Carried ${n} task${n!==1?"s":""} to tomorrow`:"No incomplete tasks to carry");
 }
 
 function renderDayCard(day) {
@@ -266,30 +381,22 @@ function renderDayCard(day) {
   const body=document.createElement("div"); body.className="day-body"+(day.isToday?" open":"");
   arr.textContent=day.isToday?"▲":"▼";
   hbtn.appendChild(tr); hbtn.appendChild(arr);
-  CATEGORIES.forEach(cat=>body.appendChild(renderCatSection(day.dateStr,cat,day.isToday)));
-
-  if(day.isToday) {
-    const eodBar = document.createElement("div"); eodBar.className = "eod-bar";
-    const clearBtn = document.createElement("button");
-    clearBtn.className = "eod-btn danger"; clearBtn.textContent = "✕ CLEAR COMPLETED";
-    clearBtn.addEventListener("click", () => clearCompleted(day.dateStr));
-    const carryBtn = document.createElement("button");
-    carryBtn.className = "eod-btn"; carryBtn.textContent = "→ CARRY INCOMPLETE";
-    carryBtn.addEventListener("click", () => carryIncomplete(day.dateStr));
-    eodBar.appendChild(clearBtn); eodBar.appendChild(carryBtn);
-    body.appendChild(eodBar);
+  CATEGORIES.forEach(cat=>body.appendChild(renderCatSection(day.dateStr,cat)));
+  if(day.isToday){
+    const bar=document.createElement("div"); bar.className="eod-bar";
+    const cb=document.createElement("button"); cb.className="eod-btn danger"; cb.textContent="✕ CLEAR COMPLETED";
+    cb.addEventListener("click",()=>clearCompleted(day.dateStr));
+    const kb=document.createElement("button"); kb.className="eod-btn"; kb.textContent="→ CARRY INCOMPLETE";
+    kb.addEventListener("click",()=>manualCarry(day.dateStr));
+    bar.appendChild(cb); bar.appendChild(kb); body.appendChild(bar);
   }
-
-  hbtn.addEventListener("click",()=>{
-    const open=body.classList.toggle("open"); arr.textContent=open?"▲":"▼";
-  });
+  hbtn.addEventListener("click",()=>{const open=body.classList.toggle("open"); arr.textContent=open?"▲":"▼";});
   card.appendChild(hbtn); card.appendChild(body);
   return card;
 }
 
-function render() {
-  const days=getDayRange();
-  const app=document.getElementById("app");
+function renderPlanner() {
+  const days=getDayRange(), app=document.getElementById("app");
   app.innerHTML="";
   const hdr=document.createElement("div");
   hdr.innerHTML=`<h1>Weekly Planner</h1><div class="subtitle">${days[0].label.toUpperCase()} → ${days[6].label.toUpperCase()}</div>`;
@@ -306,53 +413,161 @@ function render() {
   app.appendChild(leg);
 }
 
-function showToast(msg) {
-  let t = document.getElementById("toast");
-  if (!t) { t = document.createElement("div"); t.id = "toast"; t.className = "toast"; document.body.appendChild(t); }
-  t.textContent = msg;
-  t.classList.add("show");
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove("show"), 2200);
+// ─────────────────────────────────────────────
+// GROCERY
+// ─────────────────────────────────────────────
+const GROC_STORES_KEY = "grocery:stores";
+const GROC_COLOR = "#A89EC9"; // soft lavender accent for grocery
+
+function getStores() {
+  try { return JSON.parse(localStorage.getItem(GROC_STORES_KEY)) || null; }
+  catch { return null; }
+}
+function saveStores(stores) { localStorage.setItem(GROC_STORES_KEY, JSON.stringify(stores)); }
+function initStores() {
+  if (!getStores()) saveStores(["Costco","Walmart"]);
 }
 
-function getTomorrowStr() {
-  const d = new Date(); d.setDate(d.getDate() + 1);
-  return d.toLocaleDateString("en-CA");
-}
+const gKey = (store) => `grocery:items:${store}`;
+const getGrocItems = (store) => { try{return JSON.parse(localStorage.getItem(gKey(store)))||[];}catch{return[];} };
+const saveGrocItems = (store,items) => localStorage.setItem(gKey(store),JSON.stringify(items));
 
-function clearCompleted(todayStr) {
-  let cleared = 0;
-  for (const cat of CATEGORIES) {
-    const tasks = getTasks(todayStr, cat);
-    const remaining = tasks.filter(t => !t.done);
-    cleared += tasks.length - remaining.length;
-    saveTasks(todayStr, cat, remaining);
+function renderGrocItemList(store, container) {
+  const items = getGrocItems(store);
+  container.innerHTML = "";
+  if (!items.length) {
+    const e=document.createElement("div"); e.className="cat-empty"; e.textContent="nothing here yet"; container.appendChild(e);
   }
-  render();
-  showToast(cleared > 0 ? `Cleared ${cleared} completed task${cleared !== 1 ? "s" : ""}` : "No completed tasks to clear");
+  items.forEach((item, idx) => {
+    const row=document.createElement("div"); row.className="task-row";
+    const check=document.createElement("button");
+    check.className="groc-check"+(item.done?" done":"");
+    check.style.borderColor=item.done?GROC_COLOR:"#555";
+    check.style.backgroundColor=item.done?GROC_COLOR:"transparent";
+    check.innerHTML=`<svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="#0d0d0d" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    check.addEventListener("click",()=>{
+      const cur=getGrocItems(store); cur[idx].done=!cur[idx].done; saveGrocItems(store,cur);
+      if(cur[idx].done) launchFireworks(check,GROC_COLOR);
+      renderGrocItemList(store,container); updateStoreCount(store);
+    });
+    const text=document.createElement("span");
+    text.className="task-text"+(item.done?" done":""); text.textContent=item.text;
+    const editBtn=makeEditableText(text, ()=>item.text, v=>{
+      const cur=getGrocItems(store); cur[idx].text=v; saveGrocItems(store,cur);
+    });
+    const del=document.createElement("button"); del.className="task-delete"; del.textContent="×";
+    del.addEventListener("click",()=>{ const cur=getGrocItems(store); cur.splice(idx,1); saveGrocItems(store,cur); renderGrocItemList(store,container); updateStoreCount(store); });
+    row.appendChild(check); row.appendChild(text); row.appendChild(editBtn); row.appendChild(del);
+    container.appendChild(row);
+  });
+  // add input
+  const ir=document.createElement("div"); ir.className="input-row";
+  const inp=document.createElement("input"); inp.className="task-input"; inp.placeholder="+ add item"; inp.type="text";
+  const btn=document.createElement("button"); btn.className="add-btn"; btn.style.borderColor=GROC_COLOR+"66"; btn.style.color=GROC_COLOR; btn.textContent="add";
+  function addItem(){ const v=inp.value.trim(); if(!v) return; const cur=getGrocItems(store); cur.push({id:Date.now(),text:v,done:false}); saveGrocItems(store,cur); renderGrocItemList(store,container); updateStoreCount(store); }
+  btn.addEventListener("click",addItem); inp.addEventListener("keydown",e=>{if(e.key==="Enter")addItem();});
+  ir.appendChild(inp); ir.appendChild(btn);
+  container.appendChild(ir);
 }
 
-function carryIncomplete(todayStr) {
-  const tomorrowStr = getTomorrowStr();
-  let carried = 0;
-  for (const cat of CATEGORIES) {
-    const tasks = getTasks(todayStr, cat);
-    const incomplete = tasks.filter(t => !t.done);
-    if (incomplete.length === 0) continue;
-    const existing = getTasks(tomorrowStr, cat);
-    // Avoid duplicates by text
-    const existingTexts = new Set(existing.map(t => t.text.trim().toLowerCase()));
-    const toAdd = incomplete.filter(t => !existingTexts.has(t.text.trim().toLowerCase()));
-    saveTasks(tomorrowStr, cat, [...existing, ...toAdd.map(t => ({ id: Date.now() + Math.random(), text: t.text, done: false }))]);
-    carried += toAdd.length;
-    // Remove carried tasks from today
-    saveTasks(todayStr, cat, tasks.filter(t => t.done));
+function updateStoreCount(store) {
+  const el=document.getElementById("store-count-"+CSS.escape(store));
+  if(!el) return;
+  const items=getGrocItems(store), rem=items.filter(i=>!i.done).length;
+  el.textContent=rem>0?`${rem} item${rem!==1?"s":""}`:"";
+}
+
+function renderStoreCard(store) {
+  const card=document.createElement("div"); card.className="store-card";
+  const hbtn=document.createElement("button"); hbtn.className="store-header";
+  const nw=document.createElement("div"); nw.className="store-name-wrap";
+  const nameSpan=document.createElement("span"); nameSpan.className="store-name"; nameSpan.textContent=store;
+  const countSpan=document.createElement("span"); countSpan.className="store-count"; countSpan.id="store-count-"+store;
+  nw.appendChild(nameSpan); nw.appendChild(countSpan);
+  const arr=document.createElement("span"); arr.className="store-arrow"; arr.textContent="▼";
+  hbtn.appendChild(nw); hbtn.appendChild(arr);
+  const body=document.createElement("div"); body.className="store-body";
+  const listContainer=document.createElement("div");
+  renderGrocItemList(store, listContainer);
+  updateStoreCount(store);
+
+  // Store actions bar
+  const actBar=document.createElement("div"); actBar.className="store-actions";
+
+  // Clear checked
+  const clearBtn=document.createElement("button"); clearBtn.className="store-act-btn danger"; clearBtn.textContent="✕ CLEAR CHECKED";
+  clearBtn.addEventListener("click",()=>{
+    const items=getGrocItems(store), n=items.filter(i=>i.done).length;
+    saveGrocItems(store, items.filter(i=>!i.done));
+    renderGrocItemList(store,listContainer); updateStoreCount(store);
+    showToast(n>0?`Cleared ${n} item${n!==1?"s":""}`:"Nothing to clear");
+  });
+
+  // Rename store
+  const renameBtn=document.createElement("button"); renameBtn.className="store-act-btn"; renameBtn.textContent="✎ RENAME";
+  renameBtn.addEventListener("click",()=>{
+    nameSpan.contentEditable="true"; nameSpan.focus();
+    const range=document.createRange(); range.selectNodeContents(nameSpan); range.collapse(false);
+    window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
+  });
+  nameSpan.addEventListener("blur",()=>{
+    if(nameSpan.contentEditable!=="true") return;
+    const newName=nameSpan.textContent.trim();
+    nameSpan.contentEditable="false";
+    if(!newName||newName===store) return;
+    const stores=getStores(), idx=stores.indexOf(store);
+    if(idx===-1) return;
+    // migrate items
+    const items=getGrocItems(store); saveGrocItems(newName,items); localStorage.removeItem(gKey(store));
+    stores[idx]=newName; saveStores(stores); renderGrocery();
+  });
+  nameSpan.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();nameSpan.blur();}if(e.key==="Escape"){nameSpan.textContent=store;nameSpan.contentEditable="false";}});
+
+  // Delete store
+  const delBtn=document.createElement("button"); delBtn.className="store-act-btn danger"; delBtn.textContent="✕ DELETE STORE";
+  delBtn.addEventListener("click",()=>{
+    const stores=getStores().filter(s=>s!==store); saveStores(stores);
+    localStorage.removeItem(gKey(store)); renderGrocery();
+    showToast(`Removed "${store}"`);
+  });
+
+  actBar.appendChild(clearBtn); actBar.appendChild(renameBtn); actBar.appendChild(delBtn);
+  body.appendChild(listContainer); body.appendChild(actBar);
+
+  hbtn.addEventListener("click",()=>{const open=body.classList.toggle("open"); arr.textContent=open?"▲":"▼";});
+  card.appendChild(hbtn); card.appendChild(body);
+  return card;
+}
+
+function renderGrocery() {
+  initStores();
+  const stores=getStores(), el=document.getElementById("grocery-app");
+  el.innerHTML="";
+  el.innerHTML=`<h1>Grocery</h1><div class="subtitle">YOUR SHOPPING LIST</div>`;
+
+  stores.forEach(store=>el.appendChild(renderStoreCard(store)));
+
+  // Add store row
+  const addRow=document.createElement("div"); addRow.className="add-store-row";
+  const inp=document.createElement("input"); inp.className="store-name-input"; inp.placeholder="Add a store…"; inp.type="text";
+  const btn=document.createElement("button"); btn.className="store-add-btn"; btn.textContent="+ store";
+  function addStore(){
+    const v=inp.value.trim(); if(!v) return;
+    const s=getStores(); if(s.includes(v)){showToast("Store already exists");return;}
+    s.push(v); saveStores(s); renderGrocery();
   }
-  render();
-  showToast(carried > 0 ? `Carried ${carried} task${carried !== 1 ? "s" : ""} to tomorrow` : "No incomplete tasks to carry");
+  btn.addEventListener("click",addStore); inp.addEventListener("keydown",e=>{if(e.key==="Enter")addStore();});
+  addRow.appendChild(inp); addRow.appendChild(btn);
+  el.appendChild(addRow);
 }
 
-render();
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+onOpenCarry();       // carry yesterday's incomplete tasks if we haven't today
+scheduleMidnightCarry(); // set up midnight auto-carry
+renderPlanner();
+renderGrocery();
 </script>
 </body>
 </html>
