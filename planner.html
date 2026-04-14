@@ -62,6 +62,19 @@
   .legend-item { display: flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 12px; color: #444; }
 
   .fw-canvas { position: fixed; pointer-events: none; z-index: 999; }
+
+  .task-text[contenteditable="true"] { outline: none; border-bottom: 1px solid #2a2a2a; color: #e8e0d0; padding-bottom: 1px; cursor: text; }
+  .task-edit { background: none; border: none; color: #444; cursor: pointer; font-size: 13px; padding: 0 3px; line-height: 1; margin-top: 2px; flex-shrink: 0; opacity: 0.5; }
+  .task-edit:hover { opacity: 1; color: #888; }
+  .task-row:hover .task-edit { opacity: 0.8; }
+
+  .eod-bar { display: flex; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px solid #1a1a1a; }
+  .eod-btn { flex: 1; background: none; border: 1px solid #222; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; padding: 8px 6px; cursor: pointer; color: #555; transition: color 0.15s, border-color 0.15s; }
+  .eod-btn:hover { border-color: #3a3a3a; color: #888; }
+  .eod-btn.danger:hover { border-color: #7a3030; color: #C97E7E; }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 12px; color: #888; padding: 8px 18px; opacity: 0; transition: opacity 0.2s, transform 0.2s; pointer-events: none; white-space: nowrap; z-index: 1000; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -142,7 +155,7 @@ function renderStreakBanner() {
   el.innerHTML=`<span class="streak-flame">${flames}</span><div><div class="streak-count${s.count===0?' zero':''}">${s.count} day${s.count!==1?'s':''}</div><div class="streak-sub">${s.count===0?'COMPLETE TODAY TO START YOUR STREAK':`STREAK · LAST: ${s.lastCompleted}`}</div></div>`;
 }
 
-function renderTaskList(dateStr, cat, container) {
+function renderTaskList(dateStr, cat, container, isToday) {
   const color=COLORS[cat];
   const tasks=getTasks(dateStr,cat);
   container.innerHTML="";
@@ -161,19 +174,54 @@ function renderTaskList(dateStr, cat, container) {
       cur[idx].done=!cur[idx].done;
       saveTasks(dateStr,cat,cur);
       if(cur[idx].done) launchFireworks(check,color);
-      renderTaskList(dateStr,cat,container);
+      renderTaskList(dateStr,cat,container,isToday);
       checkStreak(dateStr);
     });
     const text=document.createElement("span");
     text.className="task-text"+(task.done?" done":"");
     text.textContent=task.text;
+
+    // Edit button — toggles contenteditable
+    const editBtn=document.createElement("button");
+    editBtn.className="task-edit"; editBtn.title="Edit"; editBtn.textContent="✎";
+    editBtn.addEventListener("click",()=>{
+      if(task.done) return; // don't edit completed tasks
+      const isEditing = text.contentEditable === "true";
+      if(!isEditing) {
+        text.contentEditable = "true";
+        text.focus();
+        // Move cursor to end
+        const range = document.createRange(); range.selectNodeContents(text); range.collapse(false);
+        const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+        editBtn.textContent = "✓"; editBtn.style.color = color;
+      } else {
+        const newText = text.textContent.trim();
+        if(newText) {
+          const cur=getTasks(dateStr,cat); cur[idx].text=newText; saveTasks(dateStr,cat,cur);
+        }
+        text.contentEditable = "false";
+        editBtn.textContent = "✎"; editBtn.style.color = "";
+      }
+    });
+    text.addEventListener("keydown", e => {
+      if(e.key === "Enter") { e.preventDefault(); editBtn.click(); }
+      if(e.key === "Escape") { text.textContent = task.text; text.contentEditable = "false"; editBtn.textContent = "✎"; editBtn.style.color = ""; }
+    });
+    text.addEventListener("blur", () => {
+      if(text.contentEditable === "true") {
+        const newText = text.textContent.trim();
+        if(newText) { const cur=getTasks(dateStr,cat); cur[idx].text=newText; saveTasks(dateStr,cat,cur); }
+        text.contentEditable = "false"; editBtn.textContent = "✎"; editBtn.style.color = "";
+      }
+    });
+
     const del=document.createElement("button");
     del.className="task-delete"; del.textContent="×";
     del.addEventListener("click",()=>{
       const cur=getTasks(dateStr,cat); cur.splice(idx,1);
-      saveTasks(dateStr,cat,cur); renderTaskList(dateStr,cat,container);
+      saveTasks(dateStr,cat,cur); renderTaskList(dateStr,cat,container,isToday);
     });
-    row.appendChild(check); row.appendChild(text); row.appendChild(del);
+    row.appendChild(check); row.appendChild(text); row.appendChild(editBtn); row.appendChild(del);
     container.appendChild(row);
   });
   const inputRow=document.createElement("div"); inputRow.className="input-row";
@@ -186,7 +234,7 @@ function renderTaskList(dateStr, cat, container) {
     const cur=getTasks(dateStr,cat);
     cur.push({id:Date.now(),text:v,done:false});
     saveTasks(dateStr,cat,cur);
-    renderTaskList(dateStr,cat,container);
+    renderTaskList(dateStr,cat,container,isToday);
   }
   btn.addEventListener("click",add);
   input.addEventListener("keydown",e=>{if(e.key==="Enter")add();});
@@ -194,7 +242,7 @@ function renderTaskList(dateStr, cat, container) {
   container.appendChild(inputRow);
 }
 
-function renderCatSection(dateStr, cat) {
+function renderCatSection(dateStr, cat, isToday) {
   const color=COLORS[cat];
   const sec=document.createElement("div"); sec.className="cat-section";
   const hdr=document.createElement("div"); hdr.className="cat-header";
@@ -202,7 +250,7 @@ function renderCatSection(dateStr, cat) {
   const line=document.createElement("div"); line.className="cat-line"; line.style.backgroundColor=color;
   hdr.appendChild(lbl); hdr.appendChild(line);
   const tc=document.createElement("div");
-  renderTaskList(dateStr,cat,tc);
+  renderTaskList(dateStr,cat,tc,isToday);
   sec.appendChild(hdr); sec.appendChild(tc);
   return sec;
 }
@@ -218,7 +266,20 @@ function renderDayCard(day) {
   const body=document.createElement("div"); body.className="day-body"+(day.isToday?" open":"");
   arr.textContent=day.isToday?"▲":"▼";
   hbtn.appendChild(tr); hbtn.appendChild(arr);
-  CATEGORIES.forEach(cat=>body.appendChild(renderCatSection(day.dateStr,cat)));
+  CATEGORIES.forEach(cat=>body.appendChild(renderCatSection(day.dateStr,cat,day.isToday)));
+
+  if(day.isToday) {
+    const eodBar = document.createElement("div"); eodBar.className = "eod-bar";
+    const clearBtn = document.createElement("button");
+    clearBtn.className = "eod-btn danger"; clearBtn.textContent = "✕ CLEAR COMPLETED";
+    clearBtn.addEventListener("click", () => clearCompleted(day.dateStr));
+    const carryBtn = document.createElement("button");
+    carryBtn.className = "eod-btn"; carryBtn.textContent = "→ CARRY INCOMPLETE";
+    carryBtn.addEventListener("click", () => carryIncomplete(day.dateStr));
+    eodBar.appendChild(clearBtn); eodBar.appendChild(carryBtn);
+    body.appendChild(eodBar);
+  }
+
   hbtn.addEventListener("click",()=>{
     const open=body.classList.toggle("open"); arr.textContent=open?"▲":"▼";
   });
@@ -243,6 +304,52 @@ function render() {
     leg.appendChild(item);
   });
   app.appendChild(leg);
+}
+
+function showToast(msg) {
+  let t = document.getElementById("toast");
+  if (!t) { t = document.createElement("div"); t.id = "toast"; t.className = "toast"; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+function getTomorrowStr() {
+  const d = new Date(); d.setDate(d.getDate() + 1);
+  return d.toLocaleDateString("en-CA");
+}
+
+function clearCompleted(todayStr) {
+  let cleared = 0;
+  for (const cat of CATEGORIES) {
+    const tasks = getTasks(todayStr, cat);
+    const remaining = tasks.filter(t => !t.done);
+    cleared += tasks.length - remaining.length;
+    saveTasks(todayStr, cat, remaining);
+  }
+  render();
+  showToast(cleared > 0 ? `Cleared ${cleared} completed task${cleared !== 1 ? "s" : ""}` : "No completed tasks to clear");
+}
+
+function carryIncomplete(todayStr) {
+  const tomorrowStr = getTomorrowStr();
+  let carried = 0;
+  for (const cat of CATEGORIES) {
+    const tasks = getTasks(todayStr, cat);
+    const incomplete = tasks.filter(t => !t.done);
+    if (incomplete.length === 0) continue;
+    const existing = getTasks(tomorrowStr, cat);
+    // Avoid duplicates by text
+    const existingTexts = new Set(existing.map(t => t.text.trim().toLowerCase()));
+    const toAdd = incomplete.filter(t => !existingTexts.has(t.text.trim().toLowerCase()));
+    saveTasks(tomorrowStr, cat, [...existing, ...toAdd.map(t => ({ id: Date.now() + Math.random(), text: t.text, done: false }))]);
+    carried += toAdd.length;
+    // Remove carried tasks from today
+    saveTasks(todayStr, cat, tasks.filter(t => t.done));
+  }
+  render();
+  showToast(carried > 0 ? `Carried ${carried} task${carried !== 1 ? "s" : ""} to tomorrow` : "No incomplete tasks to carry");
 }
 
 render();
