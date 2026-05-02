@@ -115,6 +115,64 @@
   .groc-check svg { display: none; }
   .groc-check.done svg { display: block; }
 
+  /* ── Self Care ── */
+  #selfcare-app { max-width: 480px; margin: 0 auto; padding: 20px 16px 80px; }
+  .sc-section { margin-bottom: 24px; }
+  .sc-section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .sc-section-title { font-family: 'DM Serif Display', serif; font-size: 22px; color: #e8e0d0; }
+  .sc-section-line { flex: 1; height: 1px; background: #222; }
+  .sc-section-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: #444; letter-spacing: 0.08em; margin-bottom: 14px; margin-top: -8px; }
+
+  .sc-item { display: flex; align-items: flex-start; gap: 10px; padding: 5px 4px; border-radius: 4px; transition: background 0.1s; }
+  .sc-item.conditional { opacity: 0.38; }
+  .sc-item.conditional.active-today { opacity: 1; }
+  .sc-check { width: 20px; height: 20px; min-width: 20px; border-radius: 4px; border: 1.5px solid #444; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
+  .sc-check svg { display: none; }
+  .sc-check.done svg { display: block; }
+  .sc-item-body { flex: 1; }
+  .sc-item-name { font-family: 'DM Sans', sans-serif; font-size: 14px; color: #d4d4d4; line-height: 1.4; }
+  .sc-item-name.done { color: #3a3a3a; text-decoration: line-through; }
+  .sc-item-tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; border-radius: 2px; padding: 1px 5px; margin-top: 2px; }
+  .sc-item-note { font-family: 'DM Mono', monospace; font-size: 10px; color: #555; margin-top: 2px; }
+
+  .sc-progress { background: #111; border: 1px solid #1e1e1e; border-radius: 6px; padding: 12px 14px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px; }
+  .sc-prog-ring { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
+  .sc-prog-ring svg { transform: rotate(-90deg); }
+  .sc-prog-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 600; color: #e8e0d0; }
+  .sc-prog-text { flex: 1; }
+  .sc-prog-title { font-family: 'DM Mono', monospace; font-size: 12px; color: #888; letter-spacing: 0.06em; }
+  .sc-prog-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: #444; margin-top: 3px; }
+
+  .sc-alt-badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 10px; border: 1px solid; border-radius: 3px; padding: 2px 8px; margin-bottom: 10px; }
+
+  /* ── Trackers (water + multivitamin) ── */
+  .sc-trackers { display: flex; gap: 10px; margin-bottom: 20px; }
+  .sc-tracker-card { flex: 1; background: #111; border: 1px solid #1e1e1e; border-radius: 6px; padding: 12px 12px 10px; }
+  .sc-tracker-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: #555; margin-bottom: 8px; }
+  .sc-tracker-value { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; margin-bottom: 6px; }
+  .sc-tracker-sub { font-family: 'DM Mono', monospace; font-size: 9px; color: #444; margin-bottom: 10px; }
+  .sc-tracker-btns { display: flex; gap: 6px; }
+  .sc-tracker-btn { flex: 1; background: none; border: 1px solid #222; border-radius: 3px; font-family: 'DM Mono', monospace; font-size: 14px; padding: 5px 0; cursor: pointer; color: #555; transition: color 0.15s, border-color 0.15s; }
+  .sc-tracker-btn:hover { color: #aaa; border-color: #444; }
+  .sc-tracker-btn.primary { font-size: 18px; }
+  .water-dots { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .water-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #2a2a2a; cursor: pointer; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
+  .water-dot.filled { background: #7EB8C9; border-color: #7EB8C9; }
+  .multi-pill { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .multi-toggle { width: 36px; height: 20px; border-radius: 10px; border: 1.5px solid #2a2a2a; background: transparent; cursor: pointer; position: relative; transition: background 0.2s, border-color 0.2s; flex-shrink: 0; }
+  .multi-toggle::after { content:""; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: #444; top: 2px; left: 2px; transition: transform 0.2s, background 0.2s; }
+  .multi-toggle.on { background: #7EC97E22; border-color: #7EC97E; }
+  .multi-toggle.on::after { background: #7EC97E; transform: translateX(16px); }
+  .multi-label { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; }
+  .multi-label.done { color: #3a3a3a; text-decoration: line-through; }
+
+  /* ── Editable routine step names ── */
+  .sc-item-name[contenteditable="true"] { outline: none; border-bottom: 1px solid #2a2a2a; color: #e8e0d0; padding-bottom: 1px; cursor: text; }
+  .sc-edit-btn { background: none; border: none; color: #333; cursor: pointer; font-size: 12px; padding: 0 3px; line-height: 1; margin-top: 2px; flex-shrink: 0; opacity: 0; transition: opacity 0.15s; }
+  .sc-item:hover .sc-edit-btn { opacity: 0.6; }
+  .sc-edit-btn:hover { opacity: 1 !important; color: #888; }
+
+
   /* ── Toast ── */
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 12px; color: #888; padding: 8px 18px; opacity: 0; transition: opacity 0.2s, transform 0.2s; pointer-events: none; white-space: nowrap; z-index: 1000; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -128,6 +186,7 @@
 <div id="tab-bar">
   <button class="tab-btn active" data-tab="planner">◈ PLANNER</button>
   <button class="tab-btn" data-tab="grocery">◇ GROCERY</button>
+  <button class="tab-btn" data-tab="selfcare">◎ SELF CARE</button>
 </div>
 
 <div id="page-planner" class="page active">
@@ -136,6 +195,10 @@
 
 <div id="page-grocery" class="page">
   <div id="grocery-app"></div>
+</div>
+
+<div id="page-selfcare" class="page">
+  <div id="selfcare-app"></div>
 </div>
 
 <script>
@@ -562,12 +625,346 @@ function renderGrocery() {
 }
 
 // ─────────────────────────────────────────────
+// SELF CARE
+// ─────────────────────────────────────────────
+
+// Storage keys
+const SC_PREFIX       = "sc:";
+const SC_RETINOL_KEY  = "sc:lastRetinolDate";   // date string of last retinol night
+const SC_ROSEMARY_KEY = "sc:lastRosemaryDate";  // date string of last rosemary night
+
+// Colors
+const SC_AM_COLOR  = "#C9A97E"; // warm gold — morning
+const SC_PM_COLOR  = "#A89EC9"; // soft lavender — evening
+
+// ── Routine definitions ──────────────────────
+// type: "daily" | "alt" | "fixed-days" | "weekly-day"
+// alt: alternates each night, tracked by last-used date
+// fixed-days: array of JS day numbers (0=Sun)
+// weekly-day: single JS day number
+
+const MORNING_STEPS = [
+  { id:"am-shower",     name:"Quick shower",          note:"rinse overnight oil",            type:"daily" },
+  { id:"am-cleanser",   name:"Foaming cleanser",       note:null,                             type:"daily" },
+  { id:"am-vitc",       name:"Vitamin C",              note:"liquid — apply to clean skin",   type:"daily", tag:"ACTIVE", tagColor:SC_AM_COLOR },
+  { id:"am-caffeine",   name:"Caffeine eye serum",     note:"for puffiness & eye bags",       type:"daily" },
+  { id:"am-guasha",     name:"Gua sha",                note:"depuff before moisturiser",      type:"daily" },
+  { id:"am-moisturise", name:"Moisturiser",            note:"neck too",                       type:"daily" },
+  { id:"am-lipbalm",    name:"Lip balm",               note:null,                             type:"daily" },
+  { id:"am-spf",        name:"Sunscreen",              note:"face + neck + chest",            type:"daily", tag:"SPF", tagColor:"#7EC97E" },
+  { id:"am-teeth",      name:"Brush teeth",            note:null,                             type:"daily" },
+  { id:"am-deo",        name:"Deodorant",              note:null,                             type:"daily" },
+  { id:"am-water",      name:"Big glass of water",     note:"before the coffee",              type:"daily" },
+  { id:"am-multi",      name:"Multivitamin",           note:"don't skip!",                    type:"daily", tag:"DAILY", tagColor:"#7EB8C9" },
+  { id:"am-coffee",     name:"Iced latte",             note:"you've earned it",               type:"daily" },
+];
+
+const EVENING_STEPS = [
+  { id:"pm-oilclean",   name:"Oil cleanser",           note:"first cleanse",                  type:"daily" },
+  { id:"pm-foamclean",  name:"Foaming cleanser",       note:"double cleanse",                 type:"daily" },
+  { id:"pm-mask",       name:"Red bean clay face mask",note:"Wed & Sat only",                 type:"fixed-days", days:[3,6], tag:"WED · SAT", tagColor:"#C97EAA" },
+  { id:"pm-shower",     name:"Shower",                 note:"wash off mask + exfoliate",      type:"daily" },
+  { id:"pm-bodymoist",  name:"Body moisturiser",       note:"apply while skin still warm",    type:"daily" },
+  { id:"pm-niacin",     name:"Niacinamide serum",      note:"neck too",                       type:"daily" },
+  { id:"pm-retinol",    name:"Retinol",                note:"alternate nights",               type:"alt", altKey:SC_RETINOL_KEY, altLabel:"RETINOL NIGHT", altColor:SC_PM_COLOR },
+  { id:"pm-eyecream",   name:"Eye cream",              note:"after serums, before moisturiser",type:"daily" },
+  { id:"pm-moisturise", name:"Moisturiser",            note:"neck too",                       type:"daily" },
+  { id:"pm-lipnight",   name:"Lip sleeping mask",      note:"esp. on retinol nights",         type:"daily" },
+  { id:"pm-handcream",  name:"Hand & cuticle cream",   note:"right before bed",               type:"daily" },
+  { id:"pm-scrub",      name:"Exfoliating body scrub", note:"Mondays — in the shower",        type:"weekly-day", day:1, tag:"MON", tagColor:"#C9A97E" },
+  { id:"pm-rosemary",   name:"Rosemary oil (hair)",    note:"alternate nights, stay overnight",type:"alt", altKey:SC_ROSEMARY_KEY, altLabel:"ROSEMARY NIGHT", altColor:"#7EC97E" },
+  { id:"pm-teeth",      name:"Brush teeth",            note:null,                             type:"daily" },
+];
+
+// ── Alt-night logic ──────────────────────────
+// Returns true if tonight is the night for this alternating step
+function isAltNight(altKey) {
+  const last = localStorage.getItem(altKey);
+  const today = todayStr();
+  if (!last) return true; // never done → do it tonight
+  const lastDate = new Date(last);
+  const todayDate = new Date(today);
+  const diffDays = Math.round((todayDate - lastDate) / 86400000);
+  // If last was yesterday → skip tonight. If 2+ days ago → do it.
+  // If last was today → already done tonight (handled by checkbox state).
+  return diffDays >= 2;
+}
+
+function markAltDone(altKey) {
+  localStorage.setItem(altKey, todayStr());
+}
+
+// ── Per-step completion storage ──────────────
+function scKey(stepId) { return SC_PREFIX + todayStr() + ":" + stepId; }
+function isStepDone(stepId) { return localStorage.getItem(scKey(stepId)) === "1"; }
+function setStepDone(stepId, done) {
+  if (done) localStorage.setItem(scKey(stepId), "1");
+  else localStorage.removeItem(scKey(stepId));
+}
+
+// ── Should a step show as active today ───────
+function isStepActiveToday(step) {
+  const dow = new Date().getDay();
+  if (step.type === "daily") return true;
+  if (step.type === "fixed-days") return step.days.includes(dow);
+  if (step.type === "weekly-day") return step.day === dow;
+  if (step.type === "alt") return isAltNight(step.altKey);
+  return true;
+}
+
+// ── Progress ring SVG ─────────────────────────
+function makeProgressRing(done, total, color) {
+  const r = 18, circ = 2 * Math.PI * r;
+  const pct = total === 0 ? 0 : done / total;
+  const dash = pct * circ;
+  const wrap = document.createElement("div"); wrap.className = "sc-prog-ring";
+  wrap.innerHTML = `
+    <svg width="44" height="44" viewBox="0 0 44 44">
+      <circle cx="22" cy="22" r="${r}" fill="none" stroke="#1e1e1e" stroke-width="3.5"/>
+      <circle cx="22" cy="22" r="${r}" fill="none" stroke="${color}" stroke-width="3.5"
+        stroke-dasharray="${dash.toFixed(1)} ${circ.toFixed(1)}"
+        stroke-linecap="round" style="transition:stroke-dasharray 0.3s"/>
+    </svg>
+    <div class="sc-prog-label">${done}/${total}</div>`;
+  return wrap;
+}
+
+// ── Inline step name editing ──────────────────
+// Steps are defined in-memory; edits are persisted in localStorage as overrides
+function scNameKey(stepId) { return "sc:name:" + stepId; }
+function getStepName(step) { return localStorage.getItem(scNameKey(step.id)) || step.name; }
+function saveStepName(stepId, name) { localStorage.setItem(scNameKey(stepId), name); }
+
+// ── Water tracker ─────────────────────────────
+const WATER_KEY = () => "sc:water:" + todayStr();
+const WATER_GOAL = 8;
+function getWater() { return parseInt(localStorage.getItem(WATER_KEY()) || "0"); }
+function setWater(n) { localStorage.setItem(WATER_KEY(), Math.max(0, Math.min(WATER_GOAL, n))); }
+
+function renderWaterTracker(wrapper) {
+  wrapper.innerHTML = "";
+  const cups = getWater();
+  wrapper.innerHTML = `<div class="sc-tracker-label">WATER INTAKE</div>`;
+  const dots = document.createElement("div"); dots.className = "water-dots";
+  for (let i = 0; i < WATER_GOAL; i++) {
+    const d = document.createElement("div");
+    d.className = "water-dot" + (i < cups ? " filled" : "");
+    d.title = `${i+1} cup${i+1!==1?"s":""}`;
+    d.addEventListener("click", () => {
+      // clicking a filled dot that's the last filled one removes it; otherwise fills up to it
+      setWater(i < cups && i === cups - 1 ? cups - 1 : i + 1);
+      renderWaterTracker(wrapper);
+    });
+    dots.appendChild(d);
+  }
+  wrapper.appendChild(dots);
+  const sub = document.createElement("div"); sub.className = "sc-tracker-sub";
+  sub.textContent = cups >= WATER_GOAL ? "✓ GOAL MET" : `${cups} / ${WATER_GOAL} cups`;
+  sub.style.color = cups >= WATER_GOAL ? "#7EC97E" : "#444";
+  wrapper.appendChild(sub);
+  const btns = document.createElement("div"); btns.className = "sc-tracker-btns";
+  const minus = document.createElement("button"); minus.className = "sc-tracker-btn"; minus.textContent = "−";
+  minus.addEventListener("click", () => { setWater(getWater() - 1); renderWaterTracker(wrapper); });
+  const plus = document.createElement("button"); plus.className = "sc-tracker-btn primary"; plus.textContent = "+";
+  plus.style.cssText = "color:#7EB8C9;border-color:#7EB8C944;";
+  plus.addEventListener("click", () => { setWater(getWater() + 1); renderWaterTracker(wrapper); });
+  btns.appendChild(minus); btns.appendChild(plus); wrapper.appendChild(btns);
+}
+
+// ── Multivitamin tracker ──────────────────────
+const MULTI_KEY = () => "sc:multi:" + todayStr();
+function getMulti() { return localStorage.getItem(MULTI_KEY()) === "1"; }
+function setMulti(v) { if (v) localStorage.setItem(MULTI_KEY(), "1"); else localStorage.removeItem(MULTI_KEY()); }
+
+function renderMultiTracker(wrapper) {
+  wrapper.innerHTML = "";
+  const done = getMulti();
+  wrapper.innerHTML = `<div class="sc-tracker-label">MULTIVITAMIN</div>`;
+  const row = document.createElement("div"); row.className = "multi-pill";
+  const toggle = document.createElement("button"); toggle.className = "multi-toggle" + (done ? " on" : "");
+  toggle.addEventListener("click", () => { setMulti(!getMulti()); renderMultiTracker(wrapper); if (!getMulti()) return; launchFireworks(toggle, "#7EC97E"); });
+  const lbl = document.createElement("span"); lbl.className = "multi-label" + (done ? " done" : "");
+  lbl.textContent = done ? "taken today" : "not yet";
+  row.appendChild(toggle); row.appendChild(lbl);
+  wrapper.appendChild(row);
+  const sub = document.createElement("div"); sub.className = "sc-tracker-sub";
+  sub.textContent = done ? "✓ DONE" : "tap to mark taken";
+  sub.style.color = done ? "#7EC97E" : "#444";
+  wrapper.appendChild(sub);
+}
+
+// ── Render a single routine section ──────────
+function renderRoutineSection(containerId, steps, title, subtitle, color) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = "";
+
+  // Count active steps for progress
+  const activeSteps = steps.filter(s => isStepActiveToday(s));
+  const doneCount   = activeSteps.filter(s => isStepDone(s.id)).length;
+  const totalCount  = activeSteps.length;
+
+  // Progress banner
+  const prog = document.createElement("div"); prog.className = "sc-progress";
+  const ring = makeProgressRing(doneCount, totalCount, color);
+  const pt   = document.createElement("div"); pt.className = "sc-prog-text";
+  const allDone = doneCount === totalCount && totalCount > 0;
+  pt.innerHTML = `<div class="sc-prog-title">${allDone ? "✓ ALL DONE" : `${totalCount - doneCount} REMAINING`}</div>
+    <div class="sc-prog-sub">${title.toUpperCase()} · ${new Date().toLocaleDateString("en-CA")}</div>`;
+  prog.appendChild(ring); prog.appendChild(pt);
+  container.appendChild(prog);
+
+  // Alt-night badges for evening
+  const altBadges = steps.filter(s => s.type === "alt");
+  if (altBadges.length) {
+    const badgeRow = document.createElement("div"); badgeRow.style.cssText = "display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;";
+    altBadges.forEach(s => {
+      const isTonight = isAltNight(s.altKey);
+      const last = localStorage.getItem(s.altKey) || "never";
+      const badge = document.createElement("div"); badge.className = "sc-alt-badge";
+      badge.style.cssText = `color:${isTonight ? s.altColor : "#444"};border-color:${isTonight ? s.altColor+"66" : "#222"};`;
+      badge.innerHTML = `<span>${isTonight ? "●" : "○"}</span><span>${s.altLabel}</span>`;
+      badge.title = `Last: ${last}`;
+      badgeRow.appendChild(badge);
+    });
+    container.appendChild(badgeRow);
+  }
+
+  // Steps
+  steps.forEach(step => {
+    const isActive = isStepActiveToday(step);
+    const done     = isStepDone(step.id);
+    const displayName = getStepName(step);
+
+    const item = document.createElement("div");
+    item.className = "sc-item";
+    if (!isActive) item.classList.add("conditional");
+
+    const check = document.createElement("button"); check.className = "sc-check" + (done ? " done" : "");
+    check.style.borderColor     = done ? color : (isActive ? "#555" : "#2a2a2a");
+    check.style.backgroundColor = done ? color : "transparent";
+    check.innerHTML = `<svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="#0d0d0d" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    if (!isActive) check.style.cursor = "default";
+    check.addEventListener("click", () => {
+      if (!isActive) return;
+      const nowDone = !isStepDone(step.id);
+      setStepDone(step.id, nowDone);
+      if (step.type === "alt" && nowDone) markAltDone(step.altKey);
+      if (nowDone) launchFireworks(check, color);
+      renderRoutineSection(containerId, steps, title, subtitle, color);
+    });
+
+    const body = document.createElement("div"); body.className = "sc-item-body"; body.style.flex = "1";
+
+    // Editable step name
+    const nameEl = document.createElement("div"); nameEl.className = "sc-item-name" + (done ? " done" : "");
+    nameEl.textContent = displayName;
+
+    // Inline edit button
+    const editBtn = document.createElement("button"); editBtn.className = "sc-edit-btn"; editBtn.textContent = "✎";
+    editBtn.addEventListener("click", () => {
+      if (nameEl.contentEditable === "true") {
+        const v = nameEl.textContent.trim();
+        if (v) { saveStepName(step.id, v); }
+        else { nameEl.textContent = displayName; }
+        nameEl.contentEditable = "false"; editBtn.textContent = "✎";
+      } else {
+        nameEl.contentEditable = "true"; nameEl.focus();
+        const range = document.createRange(); range.selectNodeContents(nameEl); range.collapse(false);
+        window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
+        editBtn.textContent = "✓";
+      }
+    });
+    nameEl.addEventListener("keydown", e => {
+      if (e.key === "Enter") { e.preventDefault(); editBtn.click(); }
+      if (e.key === "Escape") { nameEl.textContent = displayName; nameEl.contentEditable = "false"; editBtn.textContent = "✎"; }
+    });
+    nameEl.addEventListener("blur", () => {
+      if (nameEl.contentEditable !== "true") return;
+      const v = nameEl.textContent.trim(); if (v) saveStepName(step.id, v);
+      nameEl.contentEditable = "false"; editBtn.textContent = "✎";
+    });
+
+    body.appendChild(nameEl);
+
+    if (step.tag) {
+      const tag = document.createElement("div"); tag.className = "sc-item-tag";
+      tag.style.cssText = `color:${isActive ? step.tagColor : "#333"};background:${isActive ? step.tagColor+"18" : "transparent"};border:1px solid ${isActive ? step.tagColor+"44" : "#222"};`;
+      tag.textContent = step.tag; body.appendChild(tag);
+    }
+
+    if (!isActive) {
+      const noteEl = document.createElement("div"); noteEl.className = "sc-item-note";
+      if (step.type === "fixed-days") noteEl.textContent = `not today · ${step.days.map(d=>["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d]).join(" & ")} only`;
+      else if (step.type === "weekly-day") noteEl.textContent = `not today · ${["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][step.day]}s only`;
+      else if (step.type === "alt") noteEl.textContent = `not tonight · last: ${localStorage.getItem(step.altKey)||"never"}`;
+      body.appendChild(noteEl);
+    } else if (step.note) {
+      const noteEl = document.createElement("div"); noteEl.className = "sc-item-note"; noteEl.textContent = step.note;
+      body.appendChild(noteEl);
+    }
+
+    item.appendChild(check); item.appendChild(body); item.appendChild(editBtn);
+    container.appendChild(item);
+  });
+
+  // Reset button
+  const resetBar = document.createElement("div"); resetBar.style.cssText = "margin-top:16px;padding-top:12px;border-top:1px solid #1a1a1a;";
+  const resetBtn = document.createElement("button"); resetBtn.className = "eod-btn";
+  resetBtn.style.cssText = "width:100%;font-size:10px;";
+  resetBtn.textContent = "↺ RESET TODAY'S ROUTINE";
+  resetBtn.addEventListener("click", () => {
+    activeSteps.forEach(s => setStepDone(s.id, false));
+    renderRoutineSection(containerId, steps, title, subtitle, color);
+    showToast("Routine reset");
+  });
+  resetBar.appendChild(resetBtn);
+  container.appendChild(resetBar);
+}
+
+function renderSelfCare() {
+  const el = document.getElementById("selfcare-app");
+  el.innerHTML = `
+    <h1>Self Care</h1>
+    <div class="subtitle">${new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"}).toUpperCase()}</div>
+
+    <div class="sc-trackers">
+      <div class="sc-tracker-card" id="sc-water-card"></div>
+      <div class="sc-tracker-card" id="sc-multi-card"></div>
+    </div>
+
+    <div class="sc-section">
+      <div class="sc-section-header">
+        <span class="sc-section-title">Morning</span>
+        <div class="sc-section-line"></div>
+      </div>
+      <div class="sc-section-sub">START THE DAY RIGHT</div>
+      <div id="sc-morning"></div>
+    </div>
+
+    <div class="sc-section">
+      <div class="sc-section-header">
+        <span class="sc-section-title">Evening</span>
+        <div class="sc-section-line"></div>
+      </div>
+      <div class="sc-section-sub">WIND DOWN · SKIN REPAIR</div>
+      <div id="sc-evening"></div>
+    </div>
+  `;
+  renderWaterTracker(document.getElementById("sc-water-card"));
+  renderMultiTracker(document.getElementById("sc-multi-card"));
+  renderRoutineSection("sc-morning", MORNING_STEPS, "Morning", "START THE DAY RIGHT", SC_AM_COLOR);
+  renderRoutineSection("sc-evening", EVENING_STEPS, "Evening", "WIND DOWN", SC_PM_COLOR);
+}
+
+// ─────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────
-onOpenCarry();       // carry yesterday's incomplete tasks if we haven't today
-scheduleMidnightCarry(); // set up midnight auto-carry
+onOpenCarry();
+scheduleMidnightCarry();
 renderPlanner();
 renderGrocery();
+renderSelfCare();
 </script>
 </body>
 </html>
