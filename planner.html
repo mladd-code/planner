@@ -85,6 +85,49 @@
   .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
   .legend-item { display: flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 12px; color: #444; }
 
+  /* ── Deadlines — redesigned ── */
+  .deadlines-section { margin-top: 24px; margin-bottom: 8px; }
+  .deadlines-section-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 0 2px; }
+  .deadlines-section-title { font-family: 'DM Serif Display', serif; font-size: 13px; letter-spacing: 0.12em; color: #555; text-transform: uppercase; }
+  .deadlines-section-line { flex: 1; height: 1px; background: linear-gradient(to right, #2a2a2a, transparent); }
+  .deadlines-section-toggle { background: none; border: none; font-family: 'DM Mono', monospace; font-size: 10px; color: #444; cursor: pointer; padding: 2px 6px; }
+
+  .dl-chips { display: flex; flex-direction: column; gap: 6px; }
+  .dl-chip { position: relative; display: flex; align-items: center; gap: 0; border-radius: 6px; overflow: hidden; background: #0d0d0d; border: 1px solid #1e1e1e; transition: border-color 0.15s; }
+  .dl-chip:hover { border-color: #2a2a2a; }
+  .dl-chip.goal-chip { border-color: #1e2a1e; background: #0a0f0a; }
+  .dl-chip-accent { width: 3px; align-self: stretch; flex-shrink: 0; }
+  .dl-chip-inner { flex: 1; display: flex; align-items: center; gap: 10px; padding: 9px 10px; min-width: 0; }
+  .dl-chip-countdown { flex-shrink: 0; text-align: center; width: 38px; }
+  .dl-chip-days { font-family: 'DM Mono', monospace; font-size: 17px; font-weight: 600; line-height: 1; }
+  .dl-chip-unit { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.1em; color: #444; margin-top: 1px; }
+  .dl-chip-divider { width: 1px; align-self: stretch; background: #1a1a1a; flex-shrink: 0; }
+  .dl-chip-info { flex: 1; min-width: 0; padding-left: 10px; }
+  .dl-chip-name { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #ccc; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dl-chip-name.overdue { color: #C97E7E; }
+  .dl-chip-name[contenteditable="true"] { outline: none; border-bottom: 1px solid #333; white-space: normal; color: #e8e0d0; overflow: visible; }
+  .dl-chip-sub { font-family: 'DM Mono', monospace; font-size: 9px; color: #3a3a3a; margin-top: 2px; display: flex; align-items: center; gap: 5px; }
+  .dl-chip-sub input[type="date"] { background: none; border: none; border-bottom: 1px solid #222; color: #555; font-family: 'DM Mono', monospace; font-size: 9px; outline: none; color-scheme: dark; width: 95px; }
+  .dl-chip-goose { font-size: 13px; flex-shrink: 0; line-height: 1; }
+  .dl-chip-actions { display: flex; flex-direction: column; justify-content: center; gap: 0; padding: 0 6px; opacity: 0; transition: opacity 0.15s; }
+  .dl-chip:hover .dl-chip-actions { opacity: 1; }
+  .dl-chip-btn { background: none; border: none; cursor: pointer; font-size: 12px; padding: 3px 2px; color: #444; line-height: 1; }
+  .dl-chip-btn:hover { color: #aaa; }
+  .dl-chip-btn.del:hover { color: #C97E7E; }
+  .dl-chip-goto { font-family: 'DM Mono', monospace; font-size: 9px; color: #2d5a2d; background: none; border: none; cursor: pointer; padding: 0; letter-spacing: 0.06em; }
+  .dl-chip-goto:hover { color: #7EC97E; }
+  .dl-add-row { display: flex; gap: 6px; margin-top: 8px; align-items: center; flex-wrap: wrap; }
+  .dl-name-input { flex: 1; min-width: 100px; background: none; border: none; border-bottom: 1px solid #1e1e1e; color: #aaa; font-size: 12px; font-family: 'DM Mono', monospace; padding: 4px 2px; outline: none; }
+  .dl-name-input::placeholder { color: #2a2a2a; }
+  .dl-date-input { background: none; border: none; border-bottom: 1px solid #1e1e1e; color: #555; font-family: 'DM Mono', monospace; font-size: 12px; padding: 4px 2px; outline: none; color-scheme: dark; }
+  .dl-empty { font-family: 'DM Sans', sans-serif; color: #333; font-size: 13px; font-style: italic; padding: 4px; }
+
+  /* ── Pixel botanicals ── */
+  .pixel-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+  #app, #grocery-app, #selfcare-app, #goals-app { position: relative; z-index: 1; }
+  #tab-bar { position: sticky; top: 0; z-index: 52; }
+  .day-card, .store-card, .goal-card, .deadlines-section { position: relative; }
+
   /* ── Grocery ── */
   .grocery-header-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 16px; }
   .store-card { border-radius: 6px; margin-bottom: 10px; border: 1px solid #181818; background: #0e0e0e; }
@@ -173,6 +216,80 @@
   .sc-edit-btn:hover { opacity: 1 !important; color: #888; }
 
 
+  /* ── Goals ── */
+  #goals-app { max-width: 480px; margin: 0 auto; padding: 20px 16px 80px; }
+
+  .goals-filter-bar { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .goals-filter-btn { background: none; border: 1px solid #222; border-radius: 3px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; padding: 5px 10px; cursor: pointer; color: #444; transition: color 0.15s, border-color 0.15s, background 0.15s; }
+  .goals-filter-btn.active { color: #e8e0d0; border-color: #444; background: #181818; }
+  .goals-filter-btn:hover:not(.active) { color: #888; border-color: #333; }
+
+  .goal-card { border-radius: 6px; margin-bottom: 12px; border: 1px solid #1a1a1a; background: #0e0e0e; overflow: hidden; }
+  .goal-card.pinned { border-color: #C9A97E44; background: #111008; }
+  .goal-card.done-card { opacity: 0.5; }
+
+  .goal-top { padding: 13px 14px 10px; }
+  .goal-title-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 5px; }
+  .goal-pin-btn { background: none; border: none; font-size: 13px; cursor: pointer; padding: 1px 2px; opacity: 0.3; flex-shrink: 0; margin-top: 1px; transition: opacity 0.15s; }
+  .goal-pin-btn.pinned { opacity: 1; }
+  .goal-pin-btn:hover { opacity: 0.8; }
+  .goal-title { font-family: 'DM Serif Display', serif; font-size: 19px; color: #e8e0d0; flex: 1; line-height: 1.3; word-break: break-word; }
+  .goal-title[contenteditable="true"] { outline: none; border-bottom: 1px solid #333; }
+  .goal-title.done { color: #3a3a3a; text-decoration: line-through; }
+
+  .goal-meta-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .goal-cat-badge { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; border-radius: 2px; padding: 2px 6px; border: 1px solid; cursor: pointer; transition: opacity 0.15s; }
+  .goal-status-badge { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; border-radius: 2px; padding: 2px 6px; border: 1px solid; cursor: pointer; }
+  .goal-date-badge { font-family: 'DM Mono', monospace; font-size: 9px; color: #555; display: flex; align-items: center; gap: 4px; }
+  .goal-date-badge input[type="date"] { background: none; border: none; border-bottom: 1px solid #2a2a2a; color: #555; font-family: 'DM Mono', monospace; font-size: 9px; outline: none; color-scheme: dark; padding: 0; width: 95px; }
+
+  .goal-why { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #555; font-style: italic; line-height: 1.5; margin-bottom: 8px; padding-left: 2px; }
+  .goal-why[contenteditable="true"] { outline: none; color: #888; border-bottom: 1px solid #222; }
+  .goal-why.empty::before { content: "Why does this matter? (tap ✎ to add)"; color: #333; font-style: italic; }
+
+  .goal-desc { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 10px; padding-left: 2px; }
+  .goal-desc[contenteditable="true"] { outline: none; color: #aaa; border-bottom: 1px solid #222; }
+  .goal-desc.empty::before { content: "Add a description…"; color: #333; }
+
+  .goal-progress-bar-wrap { height: 3px; background: #1a1a1a; border-radius: 2px; margin-bottom: 12px; overflow: hidden; }
+  .goal-progress-bar { height: 100%; border-radius: 2px; transition: width 0.3s; }
+
+  .goal-steps { padding: 0 14px 4px; border-top: 1px solid #141414; }
+  .goal-steps-hdr { display: flex; align-items: center; justify-content: space-between; padding: 8px 0 6px; cursor: pointer; }
+  .goal-steps-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #444; }
+  .goal-steps-arrow { font-size: 11px; color: #333; }
+  .goal-step-row { display: flex; align-items: flex-start; gap: 8px; padding: 3px 0; }
+  .goal-step-check { width: 16px; height: 16px; min-width: 16px; border-radius: 3px; border: 1.5px solid #333; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
+  .goal-step-check svg { display: none; }
+  .goal-step-check.done svg { display: block; }
+  .goal-step-text { flex: 1; font-family: 'DM Sans', sans-serif; font-size: 13px; color: #aaa; line-height: 1.4; word-break: break-word; }
+  .goal-step-text.done { color: #333; text-decoration: line-through; }
+  .goal-step-text[contenteditable="true"] { outline: none; border-bottom: 1px solid #2a2a2a; color: #e8e0d0; }
+  .goal-step-del { background: none; border: none; color: #333; cursor: pointer; font-size: 16px; padding: 0 2px; flex-shrink: 0; opacity: 0; transition: opacity 0.15s; }
+  .goal-step-row:hover .goal-step-del { opacity: 1; }
+  .goal-step-del:hover { color: #C97E7E; }
+  .goal-step-add { display: flex; gap: 6px; margin-top: 4px; padding-bottom: 10px; }
+  .goal-step-input { flex: 1; background: none; border: none; border-bottom: 1px solid #1e1e1e; color: #666; font-size: 12px; font-family: 'DM Mono', monospace; padding: 3px 2px; outline: none; }
+  .goal-step-input::placeholder { color: #2a2a2a; }
+  .goal-step-addbtn { background: none; border: 1px solid #1e1e1e; border-radius: 2px; font-family: 'DM Mono', monospace; font-size: 11px; padding: 2px 8px; cursor: pointer; color: #444; }
+  .goal-step-addbtn:hover { color: #888; border-color: #333; }
+
+  .goal-actions-bar { display: flex; gap: 6px; padding: 8px 14px 12px; border-top: 1px solid #111; }
+  .goal-act-btn { background: none; border: 1px solid #1a1a1a; border-radius: 3px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.06em; padding: 5px 8px; cursor: pointer; color: #444; transition: color 0.15s, border-color 0.15s; }
+  .goal-act-btn:hover { color: #888; border-color: #333; }
+  .goal-act-btn.danger:hover { color: #C97E7E; border-color: #7a3030; }
+
+  .goal-add-card { border: 1px dashed #222; border-radius: 6px; padding: 14px; margin-bottom: 12px; }
+  .goal-add-title { font-family: 'DM Mono', monospace; font-size: 11px; color: #444; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .goal-add-field { width: 100%; background: none; border: none; border-bottom: 1px solid #1e1e1e; color: #aaa; font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 5px 2px; outline: none; margin-bottom: 10px; display: block; }
+  .goal-add-field::placeholder { color: #333; }
+  .goal-add-field.mono { font-family: 'DM Mono', monospace; font-size: 12px; }
+  .goal-add-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+  .goal-add-select { background: #111; border: 1px solid #222; border-radius: 3px; color: #666; font-family: 'DM Mono', monospace; font-size: 11px; padding: 5px 8px; outline: none; cursor: pointer; }
+  .goal-add-submit { background: none; border: 1px solid #C9A97E55; border-radius: 3px; font-family: 'DM Mono', monospace; font-size: 11px; padding: 6px 14px; cursor: pointer; color: #C9A97E; margin-top: 4px; }
+  .goal-add-submit:hover { background: #C9A97E11; }
+  .goal-empty { font-family: 'DM Sans', sans-serif; color: #333; font-size: 14px; font-style: italic; padding: 20px 4px; text-align: center; }
+
   /* ── Toast ── */
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 12px; color: #888; padding: 8px 18px; opacity: 0; transition: opacity 0.2s, transform 0.2s; pointer-events: none; white-space: nowrap; z-index: 1000; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -182,11 +299,13 @@
 </style>
 </head>
 <body>
+<canvas id="pixel-botanical" class="pixel-layer"></canvas>
 
 <div id="tab-bar">
   <button class="tab-btn active" data-tab="planner">◈ PLANNER</button>
   <button class="tab-btn" data-tab="grocery">◇ GROCERY</button>
   <button class="tab-btn" data-tab="selfcare">◎ SELF CARE</button>
+  <button class="tab-btn" data-tab="goals">◉ GOALS</button>
 </div>
 
 <div id="page-planner" class="page active">
@@ -199,6 +318,10 @@
 
 <div id="page-selfcare" class="page">
   <div id="selfcare-app"></div>
+</div>
+
+<div id="page-goals" class="page">
+  <div id="goals-app"></div>
 </div>
 
 <script>
@@ -229,6 +352,18 @@ function launchFireworks(el, color) {
   const pts=Array.from({length:36},(_,i)=>{const a=(i/36)*Math.PI*2,sp=1.5+Math.random()*2.5;return{x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-0.8,alpha:1,rad:2+Math.random()*2,col:pal[Math.floor(Math.random()*pal.length)],dec:0.02+Math.random()*0.01};});
   function draw(){ctx.clearRect(0,0,size,size);let alive=false;for(const p of pts){if(p.alpha<=0)continue;alive=true;ctx.save();ctx.globalAlpha=p.alpha;ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.rad,0,Math.PI*2);ctx.fill();ctx.restore();p.x+=p.vx;p.y+=p.vy;p.vy+=0.08;p.alpha-=p.dec;}if(alive)requestAnimationFrame(draw);else canvas.remove();}
   requestAnimationFrame(draw);
+  // Also fire a shooting star
+  if (window._botanicalShootingStar) window._botanicalShootingStar(el);
+}
+
+// Water ripple: called when a water dot is tapped
+function launchWaterRipple(el) {
+  if (window._botanicalWaterRipple) window._botanicalWaterRipple(el);
+}
+
+// Streak goose: called when streak increases
+function launchStreakGoose() {
+  if (window._botanicalStreakGoose) window._botanicalStreakGoose();
 }
 
 function makeEditableText(spanEl, getText, onSave) {
@@ -351,6 +486,7 @@ function checkStreak(ds) {
   const yStr=yd.toLocaleDateString("en-CA");
   saveStreak({count: s.lastCompleted===yStr ? s.count+1 : 1, lastCompleted:ds});
   renderStreakBanner();
+  launchStreakGoose();
 }
 
 function renderStreakBanner() {
@@ -458,6 +594,227 @@ function renderDayCard(day) {
   return card;
 }
 
+// ─────────────────────────────────────────────
+// DEADLINES
+// ─────────────────────────────────────────────
+const DL_KEY = "planner:deadlines";
+
+function getDeadlines() { try { return JSON.parse(localStorage.getItem(DL_KEY)) || []; } catch { return []; } }
+function saveDeadlines(dl) { localStorage.setItem(DL_KEY, JSON.stringify(dl)); }
+
+function daysUntil(dateStr) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const target = new Date(dateStr + "T00:00:00"); // local midnight
+  return Math.round((target - today) / 86400000);
+}
+
+function countdownColor(days) {
+  if (days < 0)  return "#C97E7E";   // overdue — red
+  if (days <= 3) return "#C9A97E";   // urgent — amber
+  if (days <= 7) return "#C9C47E";   // soon — yellow
+  return "#7EB8C9";                  // fine — blue
+}
+
+// Pixel-art goose SVG badge (inline, 20×20px grid)
+function gooseBadgeSVG(size=18) {
+  // Cream body, dark outline, orange open beak — pixel art style
+  const p = size / 18; // pixel size
+  const px = (x,y,w,h,c) => `<rect x="${x*p}" y="${y*p}" width="${w*p}" height="${h*p}" fill="${c}"/>`;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;flex-shrink:0;">
+    ${px(5,1,8,1,'#1a1a1a')}
+    ${px(3,2,12,1,'#1a1a1a')}${px(4,2,10,1,'#e8dfc8')}
+    ${px(2,3,2,1,'#1a1a1a')}${px(4,3,10,1,'#e8dfc8')}${px(14,3,2,1,'#1a1a1a')}
+    ${px(1,4,1,1,'#1a1a1a')}${px(2,4,12,1,'#e8dfc8')}${px(14,4,2,1,'#1a1a1a')}${px(15,4,2,1,'#c9603a')}
+    ${px(1,5,1,1,'#1a1a1a')}${px(2,5,12,1,'#e8dfc8')}${px(13,5,1,1,'#1a1a1a')}${px(14,5,3,1,'#c9603a')}${px(17,5,1,1,'#1a1a1a')}
+    ${px(1,6,1,1,'#1a1a1a')}${px(2,6,1,1,'#1a1a1a')}${px(3,6,9,1,'#e8dfc8')}${px(12,6,1,1,'#1a1a1a')}${px(13,6,3,1,'#e8a060')}${px(16,6,2,1,'#1a1a1a')}
+    ${px(2,7,1,1,'#1a1a1a')}${px(3,7,8,1,'#d4ccb4')}${px(11,7,2,1,'#1a1a1a')}
+    ${px(3,8,1,1,'#1a1a1a')}${px(4,8,6,1,'#d4ccb4')}${px(10,8,3,1,'#1a1a1a')}
+    ${px(4,9,1,1,'#1a1a1a')}${px(5,9,5,1,'#e8dfc8')}${px(10,9,1,1,'#1a1a1a')}
+    ${px(5,10,1,1,'#1a1a1a')}${px(6,10,5,1,'#e8dfc8')}${px(11,10,1,1,'#1a1a1a')}
+    ${px(5,11,1,1,'#1a1a1a')}${px(6,11,6,1,'#e8dfc8')}${px(12,11,1,1,'#1a1a1a')}
+    ${px(5,12,1,1,'#1a1a1a')}${px(6,12,7,1,'#e8dfc8')}${px(13,12,1,1,'#1a1a1a')}
+    ${px(5,13,1,1,'#1a1a1a')}${px(6,13,7,1,'#d4ccb4')}${px(13,13,1,1,'#1a1a1a')}
+    ${px(5,14,1,1,'#1a1a1a')}${px(6,14,7,1,'#1a1a1a')}
+    ${px(6,15,2,1,'#1a1a1a')}${px(11,15,2,1,'#1a1a1a')}
+    ${px(6,16,2,1,'#c9603a')}${px(11,16,2,1,'#c9603a')}
+    ${px(5,17,3,1,'#1a1a1a')}${px(10,17,3,1,'#1a1a1a')}
+  </svg>`;
+}
+
+function renderDeadlines() {
+  const section = document.createElement("div"); section.className = "deadlines-section";
+
+  // Header
+  const hdr = document.createElement("div"); hdr.className = "deadlines-section-hdr";
+  const title = document.createElement("span"); title.className = "deadlines-section-title"; title.textContent = "Upcoming";
+  const line = document.createElement("div"); line.className = "deadlines-section-line";
+  let chipsVisible = true;
+  const toggleBtn = document.createElement("button"); toggleBtn.className = "deadlines-section-toggle"; toggleBtn.textContent = "▲";
+  hdr.appendChild(title); hdr.appendChild(line); hdr.appendChild(toggleBtn);
+  section.appendChild(hdr);
+
+  const chipsWrap = document.createElement("div");
+  section.appendChild(chipsWrap);
+
+  function rebuildChips() {
+    chipsWrap.innerHTML = "";
+
+    // Merge standalone deadlines + goals with target dates
+    const standalone = getDeadlines().map(d => ({ ...d, _type: "deadline" }));
+    const goalItems = getGoals()
+      .filter(g => g.targetDate && g.status !== "DONE")
+      .map(g => ({ id: "goal_" + g.id, name: g.title, date: g.targetDate, _type: "goal", _goalId: g.id, _cat: g.category }));
+
+    const all = [...standalone, ...goalItems].sort((a,b) => new Date(a.date) - new Date(b.date));
+
+    const chips = document.createElement("div"); chips.className = "dl-chips";
+
+    if (!all.length) {
+      const empty = document.createElement("div"); empty.className = "dl-empty"; empty.textContent = "nothing upcoming";
+      chips.appendChild(empty);
+    }
+
+    all.forEach((dl, idx) => {
+      const days = daysUntil(dl.date);
+      const color = countdownColor(days);
+      const isGoal = dl._type === "goal";
+
+      const chip = document.createElement("div"); chip.className = "dl-chip" + (isGoal ? " goal-chip" : "");
+
+      // Left accent bar
+      const accent = document.createElement("div"); accent.className = "dl-chip-accent";
+      accent.style.background = isGoal ? (GOAL_CAT_COLORS[dl._cat] || "#7EC97E") : color;
+      chip.appendChild(accent);
+
+      // Inner
+      const inner = document.createElement("div"); inner.className = "dl-chip-inner";
+
+      // Countdown
+      const cd = document.createElement("div"); cd.className = "dl-chip-countdown";
+      const daysEl = document.createElement("div"); daysEl.className = "dl-chip-days"; daysEl.style.color = color;
+      daysEl.textContent = days < 0 ? Math.abs(days) : days;
+      const unitEl = document.createElement("div"); unitEl.className = "dl-chip-unit";
+      unitEl.textContent = days < 0 ? "LATE" : days === 0 ? "TODAY" : "DAYS";
+      cd.appendChild(daysEl); cd.appendChild(unitEl);
+      inner.appendChild(cd);
+
+      // Divider
+      const div = document.createElement("div"); div.className = "dl-chip-divider";
+      inner.appendChild(div);
+
+      // Info
+      const info = document.createElement("div"); info.className = "dl-chip-info";
+      const nameEl = document.createElement("div");
+      nameEl.className = "dl-chip-name" + (days < 0 ? " overdue" : "");
+      nameEl.textContent = dl.name;
+
+      const subRow = document.createElement("div"); subRow.className = "dl-chip-sub";
+
+      if (isGoal) {
+        // Goal chip: show goose + category + "go to goals" link
+        const gooseWrap = document.createElement("span"); gooseWrap.innerHTML = gooseBadgeSVG(13);
+        const catSpan = document.createElement("span"); catSpan.textContent = dl._cat || "Goal";
+        catSpan.style.cssText = `color:${GOAL_CAT_COLORS[dl._cat]||"#7EC97E"}88;`;
+        const gotoBtn = document.createElement("button"); gotoBtn.className = "dl-chip-goto"; gotoBtn.textContent = "→ GOALS";
+        gotoBtn.addEventListener("click", e => {
+          e.stopPropagation();
+          document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+          document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+          document.querySelector('[data-tab="goals"]').classList.add("active");
+          document.getElementById("page-goals").classList.add("active");
+        });
+        subRow.appendChild(gooseWrap); subRow.appendChild(catSpan); subRow.appendChild(gotoBtn);
+        nameEl.style.cursor = "default";
+      } else {
+        // Standalone deadline: show date + editable date picker
+        const dateDisplay = document.createElement("span");
+        dateDisplay.textContent = new Date(dl.date + "T00:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"});
+        const datePicker = document.createElement("input"); datePicker.type = "date"; datePicker.value = dl.date;
+        datePicker.style.display = "none";
+        datePicker.addEventListener("change", () => {
+          if (!datePicker.value) return;
+          const all2 = getDeadlines(); all2[idx].date = datePicker.value; saveDeadlines(all2);
+          datePicker.style.display = "none"; dateDisplay.style.display = "";
+          rebuildChips();
+        });
+        datePicker.addEventListener("blur", () => { datePicker.style.display="none"; dateDisplay.style.display=""; });
+        subRow.appendChild(dateDisplay); subRow.appendChild(datePicker);
+
+        // Inline name edit
+        nameEl.addEventListener("dblclick", () => {
+          nameEl.contentEditable = "true"; nameEl.focus();
+          const r=document.createRange(); r.selectNodeContents(nameEl); r.collapse(false);
+          window.getSelection().removeAllRanges(); window.getSelection().addRange(r);
+        });
+        nameEl.addEventListener("blur", () => {
+          if (nameEl.contentEditable !== "true") return;
+          const v=nameEl.textContent.trim();
+          if (v) { const all2=getDeadlines(); all2[idx].name=v; saveDeadlines(all2); }
+          nameEl.contentEditable="false";
+        });
+        nameEl.addEventListener("keydown", e => {
+          if (e.key==="Enter"){e.preventDefault();nameEl.blur();}
+          if (e.key==="Escape"){nameEl.textContent=dl.name;nameEl.contentEditable="false";}
+        });
+      }
+
+      info.appendChild(nameEl); info.appendChild(subRow);
+      inner.appendChild(info);
+      chip.appendChild(inner);
+
+      // Actions (only for standalone deadlines)
+      if (!isGoal) {
+        const acts = document.createElement("div"); acts.className = "dl-chip-actions";
+        const calBtn = document.createElement("button"); calBtn.className = "dl-chip-btn"; calBtn.textContent = "📅"; calBtn.style.fontSize="10px";
+        calBtn.addEventListener("click", () => {
+          const dp = subRow.querySelector("input[type=date]");
+          const dd = subRow.querySelector("span");
+          if (dp && dd) { dd.style.display="none"; dp.style.display=""; dp.focus(); dp.showPicker?.(); }
+        });
+        const delBtn = document.createElement("button"); delBtn.className = "dl-chip-btn del"; delBtn.textContent = "×"; delBtn.style.fontSize="16px";
+        delBtn.addEventListener("click", () => {
+          const all2=getDeadlines(); all2.splice(idx,1); saveDeadlines(all2); rebuildChips();
+        });
+        acts.appendChild(calBtn); acts.appendChild(delBtn);
+        chip.appendChild(acts);
+      }
+
+      chips.appendChild(chip);
+    });
+
+    // Add row
+    const addRow = document.createElement("div"); addRow.className = "dl-add-row";
+    const nameIn = document.createElement("input"); nameIn.className = "dl-name-input"; nameIn.placeholder = "new deadline…"; nameIn.type = "text";
+    const dateIn = document.createElement("input"); dateIn.className = "dl-date-input"; dateIn.type = "date"; dateIn.min = todayStr();
+    const addBtn = document.createElement("button"); addBtn.className = "add-btn";
+    addBtn.style.cssText = "border-color:#7EB8C944;color:#7EB8C9;font-size:12px;padding:3px 8px;";
+    addBtn.textContent = "add";
+    function addDeadline() {
+      const name=nameIn.value.trim(), date=dateIn.value;
+      if (!name||!date) { showToast("Enter a name and date"); return; }
+      const all2=getDeadlines(); all2.push({id:Date.now(),name,date}); saveDeadlines(all2);
+      nameIn.value=""; dateIn.value=""; rebuildChips();
+    }
+    addBtn.addEventListener("click", addDeadline);
+    nameIn.addEventListener("keydown", e=>{ if(e.key==="Enter") dateIn.focus(); });
+    dateIn.addEventListener("keydown", e=>{ if(e.key==="Enter") addDeadline(); });
+    addRow.appendChild(nameIn); addRow.appendChild(dateIn); addRow.appendChild(addBtn);
+    chips.appendChild(addRow);
+
+    chipsWrap.appendChild(chips);
+  }
+
+  rebuildChips();
+
+  toggleBtn.addEventListener("click", () => {
+    chipsVisible = !chipsVisible;
+    chipsWrap.style.display = chipsVisible ? "" : "none";
+    toggleBtn.textContent = chipsVisible ? "▲" : "▼";
+  });
+
+  return section;
+}
+
 function renderPlanner() {
   const days=getDayRange(), app=document.getElementById("app");
   app.innerHTML="";
@@ -467,6 +824,7 @@ function renderPlanner() {
   const banner=document.createElement("div"); banner.id="streak-banner"; banner.className="streak-banner";
   app.appendChild(banner); renderStreakBanner();
   days.forEach(day=>app.appendChild(renderDayCard(day)));
+  app.appendChild(renderDeadlines());
   const leg=document.createElement("div"); leg.className="legend";
   CATEGORIES.forEach(cat=>{
     const item=document.createElement("div"); item.className="legend-item";
@@ -751,8 +1109,8 @@ function renderWaterTracker(wrapper) {
     d.className = "water-dot" + (i < cups ? " filled" : "");
     d.title = `${i+1} cup${i+1!==1?"s":""}`;
     d.addEventListener("click", () => {
-      // clicking a filled dot that's the last filled one removes it; otherwise fills up to it
       setWater(i < cups && i === cups - 1 ? cups - 1 : i + 1);
+      launchWaterRipple(d);
       renderWaterTracker(wrapper);
     });
     dots.appendChild(d);
@@ -958,13 +1316,940 @@ function renderSelfCare() {
 }
 
 // ─────────────────────────────────────────────
-// INIT
+// GOALS
 // ─────────────────────────────────────────────
+const GOALS_KEY = "goals:list";
+
+const GOAL_CATS = ["Personal","Health","Career","Financial","Creative","Other"];
+const GOAL_STATUSES = ["IN PROGRESS","ON HOLD","DONE"];
+const GOAL_CAT_COLORS = {
+  Personal:"#C97EAA", Health:"#7EC97E", Career:"#7EB8C9",
+  Financial:"#C9A97E", Creative:"#A89EC9", Other:"#888"
+};
+const GOAL_STATUS_COLORS = { "IN PROGRESS":"#7EB8C9", "ON HOLD":"#C9A97E", "DONE":"#7EC97E" };
+
+function getGoals() { try { return JSON.parse(localStorage.getItem(GOALS_KEY)) || []; } catch { return []; } }
+function saveGoals(g) { localStorage.setItem(GOALS_KEY, JSON.stringify(g)); }
+
+function goalProgress(goal) {
+  if (!goal.steps || !goal.steps.length) return null;
+  const done = goal.steps.filter(s => s.done).length;
+  return { done, total: goal.steps.length, pct: done / goal.steps.length };
+}
+
+let goalsFilter = "ALL"; // ALL | IN PROGRESS | ON HOLD | DONE | category
+
+function renderGoals() {
+  const el = document.getElementById("goals-app");
+  el.innerHTML = "";
+  el.innerHTML = `<h1>Goals</h1><div class="subtitle">WHAT YOU'RE WORKING TOWARD</div>`;
+
+  // ── Filter bar ──
+  const filterBar = document.createElement("div"); filterBar.className = "goals-filter-bar";
+  const filterOpts = ["ALL", "PINNED", "IN PROGRESS", "ON HOLD", "DONE", ...GOAL_CATS];
+  filterOpts.forEach(f => {
+    const btn = document.createElement("button"); btn.className = "goals-filter-btn" + (goalsFilter === f ? " active" : "");
+    btn.textContent = f;
+    btn.addEventListener("click", () => { goalsFilter = f; renderGoals(); });
+    filterBar.appendChild(btn);
+  });
+  el.appendChild(filterBar);
+
+  // ── Add new goal form ──
+  const addCard = document.createElement("div"); addCard.className = "goal-add-card";
+  addCard.innerHTML = `<div class="goal-add-title">+ NEW GOAL</div>`;
+
+  const titleIn = document.createElement("input"); titleIn.className = "goal-add-field"; titleIn.placeholder = "Goal title…"; titleIn.type = "text";
+  const descIn  = document.createElement("input"); descIn.className  = "goal-add-field"; descIn.placeholder  = "Brief description…"; descIn.type = "text";
+  const whyIn   = document.createElement("input"); whyIn.className   = "goal-add-field mono"; whyIn.placeholder = "Why does this matter?"; whyIn.type = "text";
+
+  const addRow = document.createElement("div"); addRow.className = "goal-add-row";
+  const catSel = document.createElement("select"); catSel.className = "goal-add-select";
+  GOAL_CATS.forEach(c => { const o = document.createElement("option"); o.value = c; o.textContent = c; catSel.appendChild(o); });
+  const dateIn2 = document.createElement("input"); dateIn2.type = "date"; dateIn2.className = "goal-add-select"; dateIn2.style.cssText = "color-scheme:dark;font-size:11px;";
+  const submitBtn = document.createElement("button"); submitBtn.className = "goal-add-submit"; submitBtn.textContent = "CREATE GOAL";
+
+  submitBtn.addEventListener("click", () => {
+    const title = titleIn.value.trim(); if (!title) { showToast("Add a title first"); return; }
+    const goals = getGoals();
+    goals.unshift({ id: Date.now(), title, desc: descIn.value.trim(), why: whyIn.value.trim(),
+      category: catSel.value, status: "IN PROGRESS", pinned: false,
+      targetDate: dateIn2.value || null, steps: [], created: todayStr() });
+    saveGoals(goals);
+    titleIn.value = ""; descIn.value = ""; whyIn.value = ""; dateIn2.value = "";
+    renderGoals();
+    showToast("Goal created");
+  });
+  [titleIn, descIn, whyIn].forEach((inp, i, arr) => {
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); (arr[i+1] || submitBtn).focus(); } });
+  });
+
+  addRow.appendChild(catSel); addRow.appendChild(dateIn2);
+  addCard.appendChild(titleIn); addCard.appendChild(descIn); addCard.appendChild(whyIn);
+  addCard.appendChild(addRow); addCard.appendChild(submitBtn);
+  el.appendChild(addCard);
+
+  // ── Goal list ──
+  let goals = getGoals();
+
+  // Filter
+  if (goalsFilter === "PINNED") goals = goals.filter(g => g.pinned);
+  else if (goalsFilter === "ALL") {} // no filter
+  else if (GOAL_STATUSES.includes(goalsFilter)) goals = goals.filter(g => g.status === goalsFilter);
+  else if (GOAL_CATS.includes(goalsFilter)) goals = goals.filter(g => g.category === goalsFilter);
+
+  // Sort: pinned first, then by status (in progress > on hold > done), then by targetDate
+  goals = [...goals].sort((a, b) => {
+    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+    const sOrder = {"IN PROGRESS":0,"ON HOLD":1,"DONE":2};
+    if (sOrder[a.status] !== sOrder[b.status]) return sOrder[a.status] - sOrder[b.status];
+    if (a.targetDate && b.targetDate) return new Date(a.targetDate) - new Date(b.targetDate);
+    if (a.targetDate) return -1; if (b.targetDate) return 1;
+    return 0;
+  });
+
+  if (!goals.length) {
+    const empty = document.createElement("div"); empty.className = "goal-empty";
+    empty.textContent = goalsFilter === "ALL" ? "No goals yet — create one above" : "No goals match this filter";
+    el.appendChild(empty); return;
+  }
+
+  goals.forEach(goal => el.appendChild(renderGoalCard(goal)));
+}
+
+function renderGoalCard(goal) {
+  const allGoals = () => getGoals();
+  const idx = () => getGoals().findIndex(g => g.id === goal.id);
+  const save = (updater) => { const gs = getGoals(); const i = gs.findIndex(g => g.id === goal.id); if (i === -1) return; updater(gs[i]); saveGoals(gs); };
+
+  const catColor = GOAL_CAT_COLORS[goal.category] || "#888";
+  const statusColor = GOAL_STATUS_COLORS[goal.status] || "#888";
+  const prog = goalProgress(goal);
+  const isDone = goal.status === "DONE";
+
+  const card = document.createElement("div");
+  card.className = "goal-card" + (goal.pinned ? " pinned" : "") + (isDone ? " done-card" : "");
+
+  // ── Top section ──
+  const top = document.createElement("div"); top.className = "goal-top";
+
+  // Title row
+  const titleRow = document.createElement("div"); titleRow.className = "goal-title-row";
+  const pinBtn = document.createElement("button"); pinBtn.className = "goal-pin-btn" + (goal.pinned ? " pinned" : "");
+  pinBtn.textContent = "📌"; pinBtn.title = goal.pinned ? "Unpin" : "Pin to top";
+  pinBtn.addEventListener("click", () => { save(g => g.pinned = !g.pinned); renderGoals(); });
+
+  const titleEl = document.createElement("div"); titleEl.className = "goal-title" + (isDone ? " done" : "");
+  titleEl.textContent = goal.title;
+
+  // Title edit on double-tap / double-click
+  let titleEditBtn;
+  titleEl.addEventListener("dblclick", () => startEditTitle());
+  function startEditTitle() {
+    titleEl.contentEditable = "true"; titleEl.focus();
+    const range = document.createRange(); range.selectNodeContents(titleEl); range.collapse(false);
+    window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
+    if (titleEditBtn) titleEditBtn.textContent = "✓";
+  }
+  titleEl.addEventListener("blur", () => {
+    if (titleEl.contentEditable !== "true") return;
+    const v = titleEl.textContent.trim();
+    save(g => g.title = v || g.title);
+    titleEl.contentEditable = "false"; if (titleEditBtn) titleEditBtn.textContent = "✎";
+  });
+  titleEl.addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); titleEl.blur(); }
+    if (e.key === "Escape") { titleEl.textContent = goal.title; titleEl.contentEditable = "false"; if (titleEditBtn) titleEditBtn.textContent = "✎"; }
+  });
+
+  titleEditBtn = document.createElement("button"); titleEditBtn.className = "dl-btn"; titleEditBtn.textContent = "✎"; titleEditBtn.style.cssText = "opacity:0.3;font-size:12px;flex-shrink:0;margin-top:2px;";
+  titleEditBtn.addEventListener("click", () => {
+    if (titleEl.contentEditable === "true") titleEl.blur(); else startEditTitle();
+  });
+
+  titleRow.appendChild(pinBtn); titleRow.appendChild(titleEl); titleRow.appendChild(titleEditBtn);
+  top.appendChild(titleRow);
+
+  // Meta row: category, status, date
+  const metaRow = document.createElement("div"); metaRow.className = "goal-meta-row";
+
+  const catBadge = document.createElement("span"); catBadge.className = "goal-cat-badge";
+  catBadge.style.cssText = `color:${catColor};border-color:${catColor}44;background:${catColor}11;`;
+  catBadge.textContent = goal.category;
+  catBadge.title = "Click to cycle category";
+  catBadge.addEventListener("click", () => {
+    const i = GOAL_CATS.indexOf(goal.category);
+    save(g => g.category = GOAL_CATS[(i+1) % GOAL_CATS.length]);
+    renderGoals();
+  });
+
+  const statusBadge = document.createElement("span"); statusBadge.className = "goal-status-badge";
+  statusBadge.style.cssText = `color:${statusColor};border-color:${statusColor}44;background:${statusColor}11;`;
+  statusBadge.textContent = goal.status;
+  statusBadge.title = "Click to cycle status";
+  statusBadge.addEventListener("click", () => {
+    const i = GOAL_STATUSES.indexOf(goal.status);
+    const next = GOAL_STATUSES[(i+1) % GOAL_STATUSES.length];
+    save(g => g.status = next);
+    if (next === "DONE" && prog && prog.total > 0) { save(g => g.steps.forEach(s => s.done = true)); }
+    renderGoals();
+  });
+
+  const dateBadge = document.createElement("span"); dateBadge.className = "goal-date-badge";
+  if (goal.targetDate) {
+    const days = daysUntil(goal.targetDate);
+    const dColor = countdownColor(days);
+    dateBadge.innerHTML = `<span style="color:${dColor}">${days < 0 ? Math.abs(days)+"d overdue" : days === 0 ? "today" : days+"d left"}</span>`;
+  }
+  const datePicker = document.createElement("input"); datePicker.type = "date"; datePicker.value = goal.targetDate || "";
+  datePicker.title = "Set target date";
+  datePicker.addEventListener("change", () => { save(g => g.targetDate = datePicker.value || null); renderGoals(); });
+  dateBadge.appendChild(datePicker);
+
+  metaRow.appendChild(catBadge); metaRow.appendChild(statusBadge); metaRow.appendChild(dateBadge);
+  top.appendChild(metaRow);
+
+  // Why field
+  const whyEl = document.createElement("div"); whyEl.className = "goal-why" + (!goal.why ? " empty" : "");
+  whyEl.textContent = goal.why || "";
+  whyEl.title = "Double-tap to edit your 'why'";
+  whyEl.addEventListener("dblclick", () => {
+    if (!goal.why) whyEl.textContent = "";
+    whyEl.contentEditable = "true"; whyEl.focus();
+    whyEl.classList.remove("empty");
+  });
+  whyEl.addEventListener("blur", () => {
+    if (whyEl.contentEditable !== "true") return;
+    const v = whyEl.textContent.trim();
+    save(g => g.why = v);
+    whyEl.contentEditable = "false";
+    if (!v) { whyEl.textContent = ""; whyEl.classList.add("empty"); }
+  });
+  whyEl.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); whyEl.blur(); } });
+  top.appendChild(whyEl);
+
+  // Description
+  const descEl = document.createElement("div"); descEl.className = "goal-desc" + (!goal.desc ? " empty" : "");
+  descEl.textContent = goal.desc || "";
+  descEl.addEventListener("dblclick", () => {
+    if (!goal.desc) descEl.textContent = "";
+    descEl.contentEditable = "true"; descEl.focus();
+    descEl.classList.remove("empty");
+  });
+  descEl.addEventListener("blur", () => {
+    if (descEl.contentEditable !== "true") return;
+    const v = descEl.textContent.trim();
+    save(g => g.desc = v);
+    descEl.contentEditable = "false";
+    if (!v) { descEl.textContent = ""; descEl.classList.add("empty"); }
+  });
+  descEl.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); descEl.blur(); } });
+  top.appendChild(descEl);
+
+  // Progress bar
+  if (prog && prog.total > 0) {
+    const pbWrap = document.createElement("div"); pbWrap.className = "goal-progress-bar-wrap";
+    const pb = document.createElement("div"); pb.className = "goal-progress-bar";
+    pb.style.cssText = `width:${(prog.pct*100).toFixed(1)}%;background:${isDone ? GOAL_STATUS_COLORS["DONE"] : catColor};`;
+    pbWrap.appendChild(pb); top.appendChild(pbWrap);
+  }
+
+  card.appendChild(top);
+
+  // ── Steps section ──
+  const stepsWrap = document.createElement("div"); stepsWrap.className = "goal-steps";
+  const stepsHdr = document.createElement("div"); stepsHdr.className = "goal-steps-hdr";
+  const stepsOpen = { open: true }; // default open
+  const stepsLabel = document.createElement("span"); stepsLabel.className = "goal-steps-label";
+  const stepsArr = document.createElement("span"); stepsArr.className = "goal-steps-arrow"; stepsArr.textContent = "▲";
+  stepsHdr.appendChild(stepsLabel); stepsHdr.appendChild(stepsArr);
+
+  const stepsBody = document.createElement("div");
+
+  function rebuildSteps() {
+    const g = getGoals().find(x => x.id === goal.id) || goal;
+    const p = goalProgress(g);
+    stepsLabel.textContent = p ? `CHECKLIST · ${p.done}/${p.total}` : "CHECKLIST";
+
+    stepsBody.innerHTML = "";
+    (g.steps || []).forEach((step, si) => {
+      const row = document.createElement("div"); row.className = "goal-step-row";
+      const check = document.createElement("button"); check.className = "goal-step-check" + (step.done ? " done" : "");
+      check.style.borderColor = step.done ? catColor : "#333";
+      check.style.backgroundColor = step.done ? catColor : "transparent";
+      check.innerHTML = `<svg width="9" height="9" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="#0d0d0d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      check.addEventListener("click", () => {
+        save(g => { g.steps[si].done = !g.steps[si].done; });
+        launchFireworks(check, catColor);
+        rebuildSteps();
+        // update progress bar inline
+        const newG = getGoals().find(x => x.id === goal.id);
+        const newP = goalProgress(newG);
+        const pb = card.querySelector(".goal-progress-bar");
+        if (pb && newP) pb.style.width = (newP.pct*100).toFixed(1)+"%";
+      });
+
+      const textEl = document.createElement("div"); textEl.className = "goal-step-text" + (step.done ? " done" : "");
+      textEl.textContent = step.text;
+      // inline edit step
+      const stepEditBtn = document.createElement("button"); stepEditBtn.className = "dl-btn"; stepEditBtn.textContent = "✎"; stepEditBtn.style.cssText = "font-size:11px;opacity:0.3;flex-shrink:0;";
+      stepEditBtn.addEventListener("click", () => {
+        if (textEl.contentEditable === "true") {
+          const v = textEl.textContent.trim(); if (v) save(g => g.steps[si].text = v);
+          textEl.contentEditable = "false"; stepEditBtn.textContent = "✎";
+        } else {
+          textEl.contentEditable = "true"; textEl.focus();
+          const range = document.createRange(); range.selectNodeContents(textEl); range.collapse(false);
+          window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
+          stepEditBtn.textContent = "✓";
+        }
+      });
+      textEl.addEventListener("blur", () => {
+        if (textEl.contentEditable !== "true") return;
+        const v = textEl.textContent.trim(); if (v) save(g => g.steps[si].text = v);
+        textEl.contentEditable = "false"; stepEditBtn.textContent = "✎";
+      });
+      textEl.addEventListener("keydown", e => {
+        if (e.key === "Enter") { e.preventDefault(); stepEditBtn.click(); }
+        if (e.key === "Escape") { textEl.textContent = step.text; textEl.contentEditable = "false"; stepEditBtn.textContent = "✎"; }
+      });
+
+      const delBtn = document.createElement("button"); delBtn.className = "goal-step-del"; delBtn.textContent = "×";
+      delBtn.addEventListener("click", () => { save(g => g.steps.splice(si, 1)); rebuildSteps(); });
+
+      row.appendChild(check); row.appendChild(textEl); row.appendChild(stepEditBtn); row.appendChild(delBtn);
+      stepsBody.appendChild(row);
+    });
+
+    // Add step input
+    const addRow2 = document.createElement("div"); addRow2.className = "goal-step-add";
+    const stepIn = document.createElement("input"); stepIn.className = "goal-step-input"; stepIn.placeholder = "+ add step…"; stepIn.type = "text";
+    const addStepBtn = document.createElement("button"); addStepBtn.className = "goal-step-addbtn"; addStepBtn.textContent = "add";
+    function addStep() {
+      const v = stepIn.value.trim(); if (!v) return;
+      save(g => g.steps.push({ id: Date.now(), text: v, done: false }));
+      stepIn.value = ""; rebuildSteps();
+    }
+    addStepBtn.addEventListener("click", addStep);
+    stepIn.addEventListener("keydown", e => { if (e.key === "Enter") addStep(); });
+    addRow2.appendChild(stepIn); addRow2.appendChild(addStepBtn);
+    stepsBody.appendChild(addRow2);
+  }
+
+  rebuildSteps();
+
+  stepsHdr.addEventListener("click", () => {
+    stepsOpen.open = !stepsOpen.open;
+    stepsBody.style.display = stepsOpen.open ? "" : "none";
+    stepsArr.textContent = stepsOpen.open ? "▲" : "▼";
+  });
+
+  stepsWrap.appendChild(stepsHdr); stepsWrap.appendChild(stepsBody);
+  card.appendChild(stepsWrap);
+
+  // ── Actions bar ──
+  const actBar = document.createElement("div"); actBar.className = "goal-actions-bar";
+
+  const dupBtn = document.createElement("button"); dupBtn.className = "goal-act-btn"; dupBtn.textContent = "⧉ DUPLICATE";
+  dupBtn.addEventListener("click", () => {
+    const gs = getGoals(); const orig = gs.find(g => g.id === goal.id);
+    if (!orig) return;
+    const copy = JSON.parse(JSON.stringify(orig));
+    copy.id = Date.now(); copy.title = copy.title + " (copy)"; copy.pinned = false;
+    copy.steps = copy.steps.map(s => ({ ...s, done: false }));
+    gs.splice(gs.findIndex(g => g.id === goal.id) + 1, 0, copy);
+    saveGoals(gs); renderGoals(); showToast("Goal duplicated");
+  });
+
+  const archBtn = document.createElement("button"); archBtn.className = "goal-act-btn"; archBtn.textContent = goal.status === "DONE" ? "↺ REOPEN" : "✓ MARK DONE";
+  archBtn.addEventListener("click", () => {
+    const next = goal.status === "DONE" ? "IN PROGRESS" : "DONE";
+    save(g => { g.status = next; if (next === "DONE") g.steps.forEach(s => s.done = true); });
+    renderGoals(); showToast(next === "DONE" ? "Goal marked done 🎉" : "Goal reopened");
+    if (next === "DONE") launchFireworks(archBtn, "#7EC97E");
+  });
+
+  const delBtn2 = document.createElement("button"); delBtn2.className = "goal-act-btn danger"; delBtn2.textContent = "✕ DELETE";
+  delBtn2.addEventListener("click", () => {
+    if (!confirm(`Delete "${goal.title}"?`)) return;
+    const gs = getGoals().filter(g => g.id !== goal.id); saveGoals(gs); renderGoals();
+    showToast("Goal deleted");
+  });
+
+  actBar.appendChild(dupBtn); actBar.appendChild(archBtn); actBar.appendChild(delBtn2);
+  card.appendChild(actBar);
+
+  return card;
+}
+
+
+
+// ─────────────────────────────────────────────
+// PIXEL BOTANICAL LAYER — FULL SEASONAL
+// ─────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById("pixel-botanical");
+  const ctx = canvas.getContext("2d");
+  const P = 4; // pixel block size — all grid coords are in P-units
+
+  // ── Season detection ─────────────────────────
+  function getSeason() {
+    const m = new Date().getMonth(); // 0-11
+    if (m >= 2 && m <= 4) return "spring";
+    if (m >= 5 && m <= 7) return "summer";
+    if (m >= 8 && m <= 10) return "fall";
+    return "winter";
+  }
+  function isNight() { const h = new Date().getHours(); return h >= 20 || h < 6; }
+
+  const season = getSeason();
+
+  // ── Colour palette ───────────────────────────
+  const C = {
+    stem:     "#1a3320", stemHi: "#2d5a2d",
+    leafD:    "#1e3d22", leafM:  "#2d5a2d", leafL: "#4a7c3f", leafHi: "#7EC97E",
+    snow:     "#c8d8e8", snowHi: "#e8f0f8",
+    ground:   { spring:"#2d5a2d", summer:"#1e4a1e", fall:"#4a3820", winter:"#b8c8d8" },
+    groundHi: { spring:"#4a7c3f", summer:"#2d6a2d", fall:"#6a5030", winter:"#d0dce8" },
+    star:     "#C9A97E", starD: "#a87d50",
+    moon:     "#e8dfc8", moonSh: "#c8b898",
+    firefly:  "#C9C47E",
+    water:    "#7EB8C9",
+  };
+
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize(); window.addEventListener("resize", () => { resize(); initStars(); initFireflies(); });
+
+  // ── Drawing primitives ───────────────────────
+  function px(x, y, color, alpha=1) {
+    if (alpha <= 0) return;
+    ctx.globalAlpha = Math.min(1, alpha);
+    ctx.fillStyle = color;
+    ctx.fillRect(Math.round(x)*P, Math.round(y)*P, P, P);
+    ctx.globalAlpha = 1;
+  }
+  const W = () => Math.floor(canvas.width / P);
+  const H = () => Math.floor(canvas.height / P);
+
+  // ── Crescent moon (top-left) ─────────────────
+  function drawMoon(elapsed) {
+    const drift = Math.sin(elapsed * 0.04) * 1.5;
+    const mx = 3, my = 3 + Math.round(drift);
+    // Crescent: full disc minus offset disc
+    const moonPx = [
+      [1,0],[2,0],[3,0],
+      [0,1],[1,1],[2,1],[3,1],[4,1],
+      [0,2],[1,2],[2,2],[3,2],[4,2],
+      [0,3],[1,3],[2,3],[3,3],[4,3],
+      [1,4],[2,4],[3,4],
+    ];
+    const shadowPx = new Set([
+      "2,0","3,0","4,1","3,1","4,2","3,2","4,3","3,3","2,4","3,4",
+    ]);
+    moonPx.forEach(([dx,dy]) => {
+      const key = `${dx},${dy}`;
+      if (!shadowPx.has(key)) px(mx+dx, my+dy, C.moon, 0.7);
+      else px(mx+dx, my+dy, C.moonSh, 0.15);
+    });
+    // Soft glow pixels around moon
+    [[0,0],[5,1],[5,2],[5,3],[0,4]].forEach(([dx,dy]) => px(mx+dx,my+dy,C.moon,0.08));
+  }
+
+  // ── Stars ────────────────────────────────────
+  let stars = [];
+  function initStars() {
+    stars = Array.from({length:26}, () => ({
+      x: 6 + Math.random() * (W()-8), y: 1 + Math.random() * (H()*0.55),
+      size: Math.random()<0.25?2:1, phase: Math.random()*Math.PI*2,
+      speed: 0.4+Math.random()*0.8,
+    }));
+  }
+  initStars();
+
+  function drawStars(elapsed) {
+    stars.forEach(s => {
+      const tw = 0.5+0.5*Math.sin(elapsed*s.speed+s.phase);
+      const a = tw * 0.5;
+      if (s.size >= 2) {
+        px(s.x, s.y, C.star, a);
+        px(s.x-1,s.y,C.starD,a*0.5); px(s.x+1,s.y,C.starD,a*0.5);
+        px(s.x,s.y-1,C.starD,a*0.5);
+      } else {
+        px(s.x, s.y, C.star, a);
+      }
+    });
+  }
+
+  // ── Ground strip ─────────────────────────────
+  function drawGround() {
+    const h = H(), w = W();
+    const gc = C.ground[season], gh = C.groundHi[season];
+    for (let x=0; x<w; x++) {
+      px(x, h-1, gc, 0.9);
+      px(x, h-2, gh, 0.5);
+      if (season==="winter") {
+        // snow lumps
+        if (x%5===0) px(x, h-2, C.snowHi, 0.6);
+        if (x%7===2) { px(x,h-3,C.snow,0.4); px(x+1,h-3,C.snow,0.3); }
+      }
+    }
+  }
+
+  // ── Cherry blossom tree — reference-inspired ──
+  // Dark navy trunk, wide asymmetric branching, scattered multi-pink canopy
+
+  // Seasonal canopy colours: 4 shades from dark to light
+  const CB_COLS = {
+    spring: ["#a8527a","#C97EAA","#e8a0c8","#f0c0d8"],
+    summer: ["#1e3d22","#2d5a2d","#4a7c3f","#7EC97E"],
+    fall:   ["#7a3a10","#C9803E","#d4a050","#e8c070"],
+    winter: ["#2a2830","#3a3848","#4a4860","#888"],
+  };
+
+  // Falling petals
+  let petals = [];
+  function initPetals() {
+    const cols = CB_COLS[season];
+    petals = Array.from({length: season==="winter"?6:16}, (_,i) => ({
+      x: 5 + Math.random()*(W()-10),
+      y: Math.random()*H()*0.9,
+      vy: 0.03+Math.random()*0.04,
+      vx: (Math.random()-0.5)*0.02,
+      phase: Math.random()*Math.PI*2,
+      col: cols[i % cols.length],
+    }));
+  }
+  initPetals();
+  window.addEventListener("resize", initPetals);
+
+  function updatePetals() {
+    petals.forEach(p => {
+      p.y += p.vy;
+      p.x += p.vx + Math.sin(p.phase + p.y*0.12)*0.03;
+      if (p.y > H()) { p.y = -2; p.x = 5+Math.random()*(W()-10); }
+    });
+  }
+  function drawPetals(alpha) {
+    petals.forEach(p => px(p.x, p.y, p.col, alpha*0.55));
+  }
+
+  function drawCherryBlossomTree(elapsed) {
+    const h = H(), w = W();
+    // Anchor tree to bottom-right corner
+    const ox = w - 15, oy = h - 2;
+    const cols = CB_COLS[season];
+
+    // Colour shorthands
+    const TK = "#7a4820"; // trunk warm brown
+    const TD = "#4a2810"; // trunk dark shadow
+    const TH = "#9a6030"; // trunk highlight
+    const BR = "#4a2810"; // branch gap dark visible through canopy
+
+    // ── Trunk & roots (hardcoded pixel map, relative to ox,oy) ──
+    const trunk = [
+      // Roots spread
+      [-3,0,TD],[-2,0,TK],[-1,0,TK],[0,0,TK],[1,0,TK],[2,0,TK],[3,0,TD],
+      [-3,-1,TD],[-2,-1,TK],[-1,-1,TK],[0,-1,TK],[1,-1,TK],[2,-1,TK],[3,-1,TD],
+      [-2,-2,TD],[-1,-2,TK],[0,-2,TK],[1,-2,TK],[2,-2,TH],
+      // Trunk narrows
+      [-1,-3,TD],[0,-3,TK],[1,-3,TK],[2,-3,TH],
+      [-1,-4,TD],[0,-4,TK],[1,-4,TK],[2,-4,TH],
+      [-1,-5,TD],[0,-5,TK],[1,-5,TK],[2,-5,TH],
+      [-1,-6,TD],[0,-6,TK],[1,-6,TK],[2,-6,TH],
+      // Fork point
+      [-2,-7,TD],[-1,-7,TK],[0,-7,TK],[1,-7,TK],[2,-7,TH],[3,-7,TH],
+      [-3,-8,TD],[-2,-8,TK],[-1,-8,TK],[0,-8,TK],[1,-8,TH],[3,-8,TK],[4,-8,TH],
+      // Left arm of fork
+      [-4,-9,TD],[-3,-9,TK],[-2,-9,TK],
+      [-5,-10,TD],[-4,-10,TK],[-3,-10,TK],
+      [-6,-11,TD],[-5,-11,TK],
+      // Right arm of fork
+      [2,-9,TK],[3,-9,TK],[4,-9,TH],
+      [3,-10,TK],[4,-10,TH],[5,-10,TH],
+      [4,-11,TK],[5,-11,TH],
+      // Centre continues up
+      [0,-9,TK],[1,-9,TK],
+      [0,-10,TK],[1,-10,TH],
+      [0,-11,TK],[1,-11,TH],
+    ];
+
+    trunk.forEach(([dx,dy,col]) => px(ox+dx, oy+dy, col, 0.92));
+
+    // ── Canopy — dome shape pixel map ──
+    // Canopy is centred over trunk centre (ox+0.5).
+    // Rows span symmetrically: centre = 0, so x ranges are balanced around 0.
+    const rows = [
+      // Top of dome — narrow
+      [-26, -3,  3,  2],
+      [-25, -5,  5,  2],
+      [-24, -7,  7,  1],
+      [-23, -8,  8,  1],
+      // Upper dome
+      [-22, -9,  9,  1],
+      [-21,-10, 10,  1],
+      [-20,-11, 11,  0],
+      [-19,-12, 12,  0],
+      // Mid dome — widest
+      [-18,-13, 13,  0],
+      [-17,-13, 13,  0],
+      [-16,-14, 14,  0],
+      [-15,-14, 14,  0],
+      [-14,-14, 14,  0],
+      // Lower dome — narrows toward trunk
+      [-13,-13, 13,  0],
+      [-12,-12, 12,  1],
+      [-11,-11, -3,  1], // left lobe (trunk gap in centre)
+      [-11,   3, 11, 1], // right lobe
+      [-10,-10, -4,  2], // left
+      [-10,   4, 10,  2], // right
+    ];
+
+    rows.forEach(([dy, x1, x2, baseCol]) => {
+      for (let x = x1; x <= x2; x++) {
+        const hash = ((x*7 + dy*13) & 0xffff);
+        let colIdx;
+        if (hash % 9 === 0) colIdx = 0;
+        else if (hash % 4 === 0) colIdx = 2;
+        else colIdx = 1;
+        if (x === x1 || x === x2) colIdx = 0;
+        const isBranchGap = (hash % 11 === 3) && x !== x1 && x !== x2
+          && dy >= -22 && dy <= -13;
+        const col = isBranchGap ? BR : cols[colIdx];
+        const alpha = isBranchGap ? 0.8 : (0.75 + (hash%8)*0.025);
+        px(ox + x, oy + dy, col, alpha);
+      }
+    });
+
+    // Loose edge pixels — symmetrical around centre
+    const edgePixels = [
+      // Top wisps
+      [-2,-27,2],[0,-27,1],[2,-27,2],
+      [-6,-25,1],[6,-25,2],[-7,-24,1],[7,-24,1],[-8,-23,0],[8,-23,0],
+      // Left edge fringe
+      [-10,-22,1],[-11,-21,0],[-12,-19,1],[-13,-18,0],
+      [-12,-16,1],[-13,-14,0],[-12,-13,1],
+      // Right edge fringe
+      [10,-22,1],[11,-21,0],[12,-19,1],[13,-18,0],
+      [12,-16,1],[13,-14,0],[12,-13,1],
+      // Mid scattered
+      [-4,-26,2],[4,-26,2],[-9,-24,1],[9,-24,1],
+    ];
+    edgePixels.forEach(([dx,dy,ci]) => {
+      px(ox+dx, oy+dy, cols[ci], 0.7);
+    });
+
+    // Winter: bare branch tips + snow caps
+    if (season === "winter") {
+      [[-13,-18],[-12,-16],[12,-18],[13,-16],[0,-26],[-4,-26],[4,-26]].forEach(([dx,dy]) => {
+        px(ox+dx, oy+dy, TD, 0.5);
+        px(ox+dx, oy+dy-1, C.snowHi, 0.65);
+      });
+      snowflakes.forEach(s => {
+        px(s.x, s.y, C.snowHi, s.alpha);
+        if (s.big) px(s.x, s.y-1, C.snow, s.alpha*0.4);
+      });
+    }
+  }
+
+  // ── Snowflakes (winter only) ──────────────────
+  let snowflakes = [];
+  function initSnow() {
+    if (season!=="winter") return;
+    snowflakes = Array.from({length:18}, () => ({
+      x: Math.random()*W(), y: Math.random()*H(),
+      vy: 0.04+Math.random()*0.06, vx: (Math.random()-0.5)*0.02,
+      alpha: 0.3+Math.random()*0.5, big: Math.random()<0.3,
+    }));
+  }
+  initSnow();
+  function updateSnow() {
+    snowflakes.forEach(s => {
+      s.y += s.vy; s.x += s.vx + Math.sin(s.y*0.3)*0.02;
+      if (s.y > H()) { s.y = -1; s.x = Math.random()*W(); }
+    });
+  }
+
+  // ── Small flowers (die in winter) ────────────
+  const FLOWERS = [
+    {xFrac:0.15,type:0,phase:0.0,speed:0.5},
+    {xFrac:0.28,type:2,phase:1.1,speed:0.7},
+    {xFrac:0.40,type:1,phase:2.3,speed:0.4},
+    {xFrac:0.52,type:0,phase:0.8,speed:0.6},
+    {xFrac:0.63,type:2,phase:1.7,speed:0.5},
+    {xFrac:0.75,type:1,phase:3.0,speed:0.7},
+  ];
+  const flowerAlpha = season==="winter" ? 0 : 0.7;
+
+  function drawFlower(gx, gy, type, sway, alpha) {
+    if (alpha<=0) return;
+    const ox = Math.sin(sway)*0.35;
+    const FC = season==="summer"?["#7EC97E","#4a7c3f","#2d5a2d","#C9A97E"]
+             : season==="fall"  ?["#C9A97E","#d4804a","#a06030","#C9C47E"]
+             :                   ["#C97EAA","#e8a0c8","#C9C47E","#7EC97E"];
+    if (type===0) {
+      for(let i=0;i<4;i++) px(gx+ox*i/4,gy-i,C.stem,alpha*0.6);
+      px(gx+ox-1,gy-4,FC[0],alpha); px(gx+ox+1,gy-4,FC[0],alpha);
+      px(gx+ox,gy-5,FC[0],alpha); px(gx+ox,gy-3,FC[1],alpha);
+      px(gx+ox,gy-4,FC[3],alpha);
+    } else if (type===1) {
+      for(let i=0;i<5;i++) px(gx+ox*i/5,gy-i,C.stem,alpha*0.6);
+      px(gx+ox-1,gy-5,FC[2],alpha); px(gx+ox+1,gy-5,FC[2],alpha);
+      px(gx+ox,gy-6,FC[2],alpha); px(gx+ox,gy-4,FC[2],alpha);
+      px(gx+ox,gy-5,FC[3],alpha);
+    } else {
+      for(let i=0;i<3;i++) px(gx+ox*i/3,gy-i,C.stem,alpha*0.6);
+      px(gx+ox,gy-4,FC[0],alpha);
+      px(gx+ox-1,gy-3,FC[0],alpha); px(gx+ox+1,gy-3,FC[0],alpha);
+      px(gx+ox,gy-3,FC[3],alpha*0.9);
+    }
+    px(gx+ox-1,gy-2,C.leafM,alpha*0.5);
+  }
+
+  // ── Fireflies ─────────────────────────────────
+  let fireflies = [];
+  function initFireflies() {
+    fireflies = Array.from({length:4}, (_,i) => ({
+      x: 5 + Math.random()*(W()-10), y: H()*0.3 + Math.random()*H()*0.4,
+      phase: Math.random()*Math.PI*2, orbitR: 2+Math.random()*3,
+      orbitSpeed: 0.3+Math.random()*0.4, orbitAngle: Math.random()*Math.PI*2,
+      driftX: (Math.random()-0.5)*0.015, driftY: (Math.random()-0.5)*0.01,
+    }));
+  }
+  initFireflies();
+
+  function drawFireflies(elapsed) {
+    if (!isNight()) return;
+    fireflies.forEach(f => {
+      f.orbitAngle += f.orbitSpeed * 0.016;
+      f.x += f.driftX + Math.cos(f.orbitAngle)*0.04;
+      f.y += f.driftY + Math.sin(f.orbitAngle)*0.03;
+      if (f.x<1) f.x=W()-2; if (f.x>W()-1) f.x=2;
+      if (f.y<2) f.y=H()*0.7; if (f.y>H()-4) f.y=H()*0.2;
+      const glow = 0.3+0.7*Math.abs(Math.sin(elapsed*1.2+f.phase));
+      px(f.x, f.y, C.firefly, glow*0.8);
+      if (glow>0.6) { // soft cross glow when bright
+        px(f.x-1,f.y,C.firefly,glow*0.2);
+        px(f.x+1,f.y,C.firefly,glow*0.2);
+        px(f.x,f.y-1,C.firefly,glow*0.15);
+      }
+    });
+  }
+
+  // ── Comet ─────────────────────────────────────
+  // Slow diagonal comet with thick glowing tail, pixel cross burst at head
+  let comets = [];
+  window._botanicalShootingStar = function() {
+    // Always arc top-right → lower-left diagonal, like the reference
+    const w = W(), h = H();
+    // Start from upper-right area
+    const startX = Math.floor(w * (0.55 + Math.random() * 0.35));
+    const startY = Math.floor(h * (0.02 + Math.random() * 0.08));
+    // Travel lower-left
+    const angle = Math.PI * (0.6 + Math.random() * 0.15); // ~108–135 degrees
+    const speed = 0.35 + Math.random() * 0.15; // slow
+    comets.push({
+      x: startX, y: startY,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1.0,
+      age: 0,
+      trail: [],
+      maxTrail: 28,
+    });
+  };
+
+  function drawComets() {
+    comets = comets.filter(c => c.life > 0);
+    comets.forEach(c => {
+      c.age++;
+      c.trail.push({ x: c.x, y: c.y });
+      if (c.trail.length > c.maxTrail) c.trail.shift();
+      c.x += c.vx;
+      c.y += c.vy;
+      c.life -= 0.008; // very slow fade — lasts ~125 frames (~4s at 30fps)
+
+      // Draw tail — thick near head, tapers to 1px at far end
+      c.trail.forEach((t, i) => {
+        const frac = i / c.trail.length; // 0 = oldest, 1 = newest
+        const ta = frac * frac * c.life * 0.95; // quadratic fade
+        const thickness = frac > 0.7 ? 2 : 1; // thick near head
+
+        // Core tail — near-white cyan
+        px(t.x, t.y, "#c8f0e8", ta * 0.9);
+        // Glow — slightly wider, softer teal
+        if (thickness === 2) {
+          // Perpendicular to travel direction — add pixels either side
+          px(t.x + 1, t.y, "#7EB8C9", ta * 0.5);
+          px(t.x - 1, t.y, "#7EB8C9", ta * 0.5);
+          px(t.x, t.y + 1, "#7EB8C9", ta * 0.3);
+        }
+        if (frac > 0.85) {
+          // Very brightest part near head — solid white core
+          px(t.x, t.y, "#e8f8f4", ta);
+          px(t.x + 1, t.y, "#c8f0e8", ta * 0.7);
+          px(t.x - 1, t.y, "#c8f0e8", ta * 0.7);
+        }
+      });
+
+      // Comet head — pixel cross burst (like the reference)
+      if (c.life > 0.1) {
+        const hx = Math.round(c.x), hy = Math.round(c.y);
+        const ha = Math.min(1, c.life * 1.2);
+        // Bright centre
+        px(hx,   hy,   "#ffffff", ha);
+        px(hx+1, hy,   "#e8f8f4", ha * 0.9);
+        px(hx-1, hy,   "#e8f8f4", ha * 0.9);
+        px(hx,   hy-1, "#e8f8f4", ha * 0.9);
+        px(hx,   hy+1, "#e8f8f4", ha * 0.8);
+        // Cross arms
+        px(hx+2, hy,   "#c8f0e8", ha * 0.6);
+        px(hx-2, hy,   "#c8f0e8", ha * 0.6);
+        px(hx,   hy-2, "#c8f0e8", ha * 0.6);
+        px(hx,   hy+2, "#c8f0e8", ha * 0.5);
+        // Outer cross tips
+        px(hx+3, hy,   "#7EB8C9", ha * 0.3);
+        px(hx-3, hy,   "#7EB8C9", ha * 0.3);
+        px(hx,   hy-3, "#7EB8C9", ha * 0.3);
+        // Diagonal glow
+        px(hx+1, hy-1, "#c8f0e8", ha * 0.4);
+        px(hx-1, hy-1, "#c8f0e8", ha * 0.4);
+        px(hx+1, hy+1, "#c8f0e8", ha * 0.3);
+        px(hx-1, hy+1, "#c8f0e8", ha * 0.3);
+      }
+    });
+  }
+
+  // ── Water ripple ─────────────────────────────
+  let waterRipples = [];
+  window._botanicalWaterRipple = function(el) {
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const cx = Math.floor((rect.left+rect.width/2)/P);
+    const cy = Math.floor((rect.top+rect.height/2)/P);
+    waterRipples.push({cx, cy, r:0, maxR:5, alpha:0.8});
+  };
+
+  function drawWaterRipples() {
+    waterRipples = waterRipples.filter(r => r.alpha > 0.05);
+    waterRipples.forEach(r => {
+      r.r += 0.18; r.alpha -= 0.025;
+      // Draw pixel ring at radius r
+      const steps = Math.ceil(r.r * Math.PI * 2);
+      for (let i=0; i<steps; i++) {
+        const a = (i/steps)*Math.PI*2;
+        const rx = Math.round(r.cx + Math.cos(a)*r.r);
+        const ry = Math.round(r.cy + Math.sin(a)*r.r);
+        px(rx, ry, C.water, r.alpha * 0.6);
+      }
+    });
+  }
+
+  // ── Waddling goose ────────────────────────────
+  // Pixel goose sprite: facing right or left, 4 walk frames
+  function gooseSprite(frame, facing) {
+    // Returns array of [dx,dy,color] relative to anchor (foot position)
+    const f = frame % 2; // 0 or 1 for walk cycle
+    const base = [
+      // Body
+      [1,-3,C.moonSh],[2,-3,C.moon],[3,-3,C.moon],[4,-3,C.moonSh],
+      [1,-4,C.moon],[2,-4,C.moon],[3,-4,C.moon],[4,-4,C.moon],[5,-4,C.moonSh],
+      [2,-5,C.moon],[3,-5,C.moon],[4,-5,C.moonSh],
+      // Neck
+      [4,-5,C.moonSh],[4,-6,C.moon],[5,-6,C.moon],
+      // Head
+      [4,-7,C.moon],[5,-7,C.moon],[6,-7,C.moonSh],
+      [4,-8,C.moon],[5,-8,C.moon],
+      // Beak (open)
+      [6,-7,"#c9603a"],[7,-7,"#e8a060"],[6,-8,"#c9603a"],
+      // Eye
+      [5,-8,"#1a1a1a"],
+      // Feet
+      [2,-1,f===0?"#c9603a":"#1a1a1a"],[3,-1,f===0?"#c9603a":"#1a1a1a"],
+      [3+f, 0,"#c9603a"],
+      [1+f,-1,"#c9603a"],
+    ];
+    if (facing === -1) { // flip for left
+      const maxX = 8;
+      return base.map(([dx,dy,col]) => [maxX-dx, dy, col]);
+    }
+    return base;
+  }
+
+  let goose = null;
+  window._botanicalStreakGoose = function() {
+    const h = H(), w = W();
+    const startRight = Math.random() < 0.5;
+    goose = {
+      x: startRight ? -2 : w+2,
+      y: h-3,
+      vx: startRight ? 0.25 : -0.25,
+      facing: startRight ? 1 : -1,
+      frame: 0, frameTimer: 0,
+      alpha: 0, fadeIn: true,
+      done: false,
+    };
+  };
+
+  function drawGoose(elapsed) {
+    if (!goose) return;
+    goose.x += goose.vx;
+    goose.frameTimer++;
+    if (goose.frameTimer > 8) { goose.frame++; goose.frameTimer = 0; }
+    if (goose.fadeIn && goose.alpha < 1) goose.alpha = Math.min(1, goose.alpha+0.05);
+    const w = W(), h = H();
+    if ((goose.vx>0 && goose.x > w+3) || (goose.vx<0 && goose.x < -3)) { goose = null; return; }
+    const sprite = gooseSprite(goose.frame, goose.facing);
+    sprite.forEach(([dx,dy,col]) => px(goose.x+dx, goose.y+dy, col, goose.alpha*0.9));
+  }
+
+  // ── Main draw loop ────────────────────────────
+  let startTime = null;
+
+  function draw(ts) {
+    if (!startTime) startTime = ts;
+    const elapsed = (ts-startTime)/1000;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const h=H(), w=W();
+
+    drawMoon(elapsed);
+    drawStars(elapsed);
+
+    // Cherry blossom tree
+    drawCherryBlossomTree(elapsed);
+
+    // Ground
+    drawGround();
+
+    // Flowers
+    const flFade = season==="winter" ? 0 : Math.min(1,Math.max(0,(elapsed-2)/1.5));
+    FLOWERS.forEach(f => {
+      const gx=Math.floor(f.xFrac*w), gy=h-3;
+      drawFlower(gx, gy, f.type, elapsed*f.speed+f.phase, flFade*flowerAlpha);
+    });
+
+    updatePetals();
+    drawPetals(flFade > 0 ? 1 : 0.4);
+
+    if (season==="winter") updateSnow();
+
+    drawFireflies(elapsed);
+    drawComets();
+    drawWaterRipples();
+    drawGoose(elapsed);
+
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+})();
+
 onOpenCarry();
 scheduleMidnightCarry();
 renderPlanner();
 renderGrocery();
 renderSelfCare();
+renderGoals();
 </script>
 </body>
 </html>
