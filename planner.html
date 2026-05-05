@@ -1230,6 +1230,17 @@ function renderRoutineSection(containerId, defaults, title, subtitle, color) {
   // ── Drag-to-reorder state ──
   let dragIdx = null;
 
+  // Returns the index of the item the pointer (clientY) is hovering over
+  function getHoveredIdx(clientY) {
+    const items = container.querySelectorAll(".sc-item");
+    for (let i = 0; i < items.length; i++) {
+      const rect = items[i].getBoundingClientRect();
+      // Use the midpoint of each item as the threshold
+      if (clientY < rect.top + rect.height / 2) return i;
+    }
+    return items.length - 1; // past all items → last position
+  }
+
   // Steps
   steps.forEach((step, idx) => {
     const isActive = isStepActiveToday(step);
@@ -1244,22 +1255,18 @@ function renderRoutineSection(containerId, defaults, title, subtitle, color) {
     const handle = document.createElement("button"); handle.className = "sc-drag-handle"; handle.textContent = "⠿"; handle.title = "Drag to reorder";
     handle.setAttribute("aria-label", "reorder");
 
-    // Touch drag logic
-    let touchStartY = 0, touchStartIdx = idx;
+    // Touch drag — hit-test against live item rects
     handle.addEventListener("touchstart", e => {
       e.preventDefault();
       dragIdx = idx;
       item.classList.add("dragging");
-      touchStartY = e.touches[0].clientY;
     }, { passive: false });
+
     handle.addEventListener("touchmove", e => {
       e.preventDefault();
-      const dy = e.touches[0].clientY - touchStartY;
-      const itemH = item.offsetHeight;
-      const moved = Math.round(dy / itemH);
-      const newIdx = Math.max(0, Math.min(steps.length - 1, touchStartIdx + moved));
+      const clientY = e.touches[0].clientY;
+      const newIdx = getHoveredIdx(clientY);
       if (newIdx !== dragIdx) {
-        // Reorder in-place
         const reordered = [...steps];
         const [removed] = reordered.splice(dragIdx, 1);
         reordered.splice(newIdx, 0, removed);
@@ -1268,22 +1275,19 @@ function renderRoutineSection(containerId, defaults, title, subtitle, color) {
         refresh();
       }
     }, { passive: false });
+
     handle.addEventListener("touchend", () => {
       item.classList.remove("dragging");
       dragIdx = null;
     });
 
-    // Mouse drag (desktop fallback)
+    // Mouse drag — same hit-test approach
     handle.addEventListener("mousedown", e => {
       e.preventDefault();
       dragIdx = idx;
       item.classList.add("dragging");
-      const startY = e.clientY;
       const onMove = ev => {
-        const dy = ev.clientY - startY;
-        const itemH = item.offsetHeight || 32;
-        const moved = Math.round(dy / itemH);
-        const newIdx = Math.max(0, Math.min(steps.length-1, idx+moved));
+        const newIdx = getHoveredIdx(ev.clientY);
         if (newIdx !== dragIdx) {
           const reordered = [...steps];
           const [removed] = reordered.splice(dragIdx, 1);
@@ -1293,7 +1297,11 @@ function renderRoutineSection(containerId, defaults, title, subtitle, color) {
           refresh();
         }
       };
-      const onUp = () => { item.classList.remove("dragging"); dragIdx = null; document.removeEventListener("mousemove", onMove); document.removeEventListener("mouseup", onUp); };
+      const onUp = () => {
+        dragIdx = null;
+        document.removeEventListener("mousemove", onMove);
+        document.removeEventListener("mouseup", onUp);
+      };
       document.addEventListener("mousemove", onMove);
       document.addEventListener("mouseup", onUp);
     });
