@@ -451,7 +451,6 @@ function autoCarry(fromDate, toDate, silent=false) {
     const toAdd = incomplete.filter(t => !existingTexts.has(t.text.trim().toLowerCase()));
     if (!toAdd.length) continue;
     saveTasks(toDate, cat, [...existing, ...toAdd.map(t=>({id:Date.now()+Math.random(),text:t.text,done:false}))]);
-    saveTasks(fromDate, cat, tasks.filter(t=>t.done));
     count += toAdd.length;
   }
   localStorage.setItem(CARRY_KEY, fromDate+"->"+toDate);
